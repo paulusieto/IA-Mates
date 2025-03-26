@@ -159,42 +159,43 @@
       document.getElementById("interaction").appendChild(nextBtn);
     }
 
-    async function checkTFAnswer(userAnswers) {
-      const box = document.getElementById("chatbox");
-      box.innerHTML += `<div class="message user">${JSON.stringify(userAnswers)}</div>`;
+async function checkTFAnswers(userAnswers) {
+  const res = await fetch("/api/check_tf", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chunk_id: current.chunk_id,
+      user_answer: userAnswers
+    })
+  });
+  const data = await res.json();
+  const box = document.getElementById("chatbox");
 
-      const res = await fetch("/api/check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chunk_id: current.chunk_id,
-          user_answer: userAnswers
-        })
-      });
+  Object.entries(data.correct_answers).forEach(([num, correctVal]) => {
+    const userVal = userAnswers[num];
+    const isCorrect = userVal === correctVal;
+    const reply = document.createElement("div");
+    reply.className = "message bot";
+    reply.innerHTML = `Statement ${num}: ${userVal || "❓ No answer"} → ${isCorrect ? "✅" : "❌"} (Correct: ${correctVal})`;
+    box.appendChild(reply);
+  });
 
-      const data = await res.json();
-      const feedback = document.createElement("div");
-      feedback.className = "message bot";
+  const expl = document.createElement("div");
+  expl.className = "message bot";
+  expl.textContent = data.explanation || "Answer feedback complete.";
+  box.appendChild(expl);
 
-      if (data.correct) {
-        feedback.textContent = "✅ All your answers are correct!";
-      } else {
-        feedback.innerHTML = "❌ Some answers were incorrect.<br>";
-        Object.entries(data.correct_answers).forEach(([k, v]) => {
-          feedback.innerHTML += `• Statement ${k}: correct answer is <b>${v}</b><br>`;
-        });
-      }
-      box.appendChild(feedback);
+  const nextBtn = document.createElement("button");
+  nextBtn.id = "nextQuestion";
+  nextBtn.textContent = "Next Question";
+  nextBtn.onclick = () => {
+    index++;
+    current = questions[index];
+    loadQuestion();
+  };
+  document.getElementById("interaction").appendChild(nextBtn);
+}
 
-      const nextBtn = document.createElement("button");
-      nextBtn.textContent = "Next Question";
-      nextBtn.onclick = () => {
-        index++;
-        current = questions[index];
-        loadQuestion();
-      };
-      document.getElementById("interaction").appendChild(nextBtn);
-    }
 
     loadQuestion();
   </script>
