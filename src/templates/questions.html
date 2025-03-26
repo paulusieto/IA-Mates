@@ -1,92 +1,70 @@
-<!DOCTYPE html>
+""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ source }} - {{ qtype.upper() }}</title>
+  <title>{{ source }} - {{ qtype|upper }}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
 <header>
   <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
-  {{ source }} - {{ qtype.upper() }}
+  {{ qtype|upper }} - {{ source }}
 </header>
 
 <div id="sidebar">
   <button class="close-button" onclick="toggleSidebar()">✖</button>
   <ul>
-    <li>
-      <span>EPAC</span>
-      <ul>
-        <li><a href="/menu/epac/qcm">QCM</a></li>
-        <li><a href="/menu/epac/open">OPEN</a></li>
-      </ul>
-    </li>
-    <li>
-      <span>Pre-Exam</span>
-      <ul>
-        <li><a href="/menu/pre-exam/qcm">QCM</a></li>
-        <li><a href="/menu/pre-exam/open">OPEN</a></li>
-      </ul>
-    </li>
-    <li>
-      <span>Paper D</span>
-      <ul>
-        <li><a href="/menu/paper-d/qcm">QCM</a></li>
-        <li><a href="/menu/paper-d/open">OPEN</a></li>
-      </ul>
-    </li>
+    <li><a href="/menu/EPAC/qcm">EPAC - QCM</a></li>
+    <li><a href="/menu/EPAC/open">EPAC - OPEN</a></li>
+    <li><a href="/menu/Pre-Exam/qcm">Pre-Exam - QCM</a></li>
+    <li><a href="/menu/Pre-Exam/open">Pre-Exam - OPEN</a></li>
+    <li><a href="/menu/Paper D/qcm">Paper D - QCM</a></li>
+    <li><a href="/menu/Paper D/open">Paper D - OPEN</a></li>
   </ul>
 </div>
 
 <div class="chatbox" id="chatbox">
-  {% for question in questions %}
-    <div class="message bot">{{ question["question"] }}</div>
-
-    {% if qtype == "qcm" %}
-      <div class="choices">
-        {% for choice in ["A", "B", "C", "D"] %}
-          <button onclick="submitAnswer('{{ question['chunk_id'] }}', '{{ choice }}')">{{ choice }}</button>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="choices">
-        <textarea id="input_{{ question['chunk_id'] }}" placeholder="Type your answer here..." style="width: 100%; height: 80px;"></textarea>
-        <button onclick="submitOpenAnswer('{{ question['chunk_id'] }}')">Submit</button>
-      </div>
-    {% endif %}
-
-    <div class="message explanation" id="explanation_{{ question['chunk_id'] }}"></div>
-    <hr>
-  {% endfor %}
+  {% if questions|length > 0 %}
+    <div class="message bot" id="questionText">{{ questions[0].question }}</div>
+    <div class="choices" id="choicesBox">
+      <button onclick="selectAnswer('A')">A</button>
+      <button onclick="selectAnswer('B')">B</button>
+      <button onclick="selectAnswer('C')">C</button>
+      <button onclick="selectAnswer('D')">D</button>
+    </div>
+    <div class="message bot" id="feedback"></div>
+    <input type="hidden" id="chunkId" value="{{ questions[0].chunk_id }}">
+  {% else %}
+    <div class="message bot">No questions available for this section.</div>
+  {% endif %}
 </div>
 
 <script>
-  function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("active");
-    document.body.classList.toggle("sidebar-active");
-  }
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("active");
+  document.body.classList.toggle("sidebar-active");
+}
 
-  async function submitAnswer(chunk_id, user_answer) {
-    const res = await fetch("/api/check", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chunk_id, user_answer })
-    });
-    const data = await res.json();
-    document.getElementById("explanation_" + chunk_id).textContent = data.explanation;
-  }
-
-  async function submitOpenAnswer(chunk_id) {
-    const user_answer = document.getElementById("input_" + chunk_id).value;
-    const res = await fetch("/api/open", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chunk_id, user_answer })
-    });
-    const data = await res.json();
-    document.getElementById("explanation_" + chunk_id).textContent = data.explanation;
-  }
+function selectAnswer(letter) {
+  const chunkId = document.getElementById("chunkId").value;
+  fetch("/api/check", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({chunk_id: chunkId, user_answer: letter})
+  })
+  .then(res => res.json())
+  .then(data => {
+    const feedback = document.getElementById("feedback");
+    if (data.correct === true) {
+      feedback.innerHTML = `✅ Bonne réponse. ${data.explanation}`;
+    } else if (data.correct === false) {
+      feedback.innerHTML = `❌ Mauvaise réponse. La bonne réponse était ${data.correct_letter}.<br><br>${data.explanation}`;
+    } else {
+      feedback.innerHTML = `🤖 ${data.explanation}`;
+    }
+  });
+}
 </script>
 
 </body>
