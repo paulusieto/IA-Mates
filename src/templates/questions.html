@@ -2,125 +2,133 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ qtype|upper }} - {{ source }}</title>
+  <title>{{ qtype.upper() }} - {{ source.lower() }}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  <header>
+    <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
+    {{ qtype.upper() }} - {{ source.lower() }}
+  </header>
 
-<header>
-  <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
-  {{ qtype|upper }} - {{ source }}
-</header>
+  <div id="sidebar">
+    <button class="close-button" onclick="toggleSidebar()">✖</button>
+    <ul>
+      <li><a href="/menu/epac/qcm">EPAC - QCM</a></li>
+      <li><a href="/menu/epac/open">EPAC - OPEN</a></li>
+      <li><a href="/menu/pre-exam/qcm">Pre-Exam - QCM</a></li>
+      <li><a href="/menu/pre-exam/open">Pre-Exam - OPEN</a></li>
+      <li><a href="/menu/paper-d/qcm">Paper D - QCM</a></li>
+      <li><a href="/menu/paper-d/open">Paper D - OPEN</a></li>
+    </ul>
+  </div>
 
-<div id="sidebar">
-  <button class="close-button" onclick="toggleSidebar()">✖</button>
-  <ul>
-    <li><a href="/menu/epac/qcm">EPAC - QCM</a></li>
-    <li><a href="/menu/epac/open">EPAC - OPEN</a></li>
-    <li><a href="/menu/pre-exam/qcm">Pre-Exam - QCM</a></li>
-    <li><a href="/menu/pre-exam/open">Pre-Exam - OPEN</a></li>
-    <li><a href="/menu/paper-d/qcm">Paper D - QCM</a></li>
-    <li><a href="/menu/paper-d/open">Paper D - OPEN</a></li>
-  </ul>
-</div>
+  <div class="chatbox" id="chatbox"></div>
 
-<div class="chatbox" id="chatbox"></div>
+  <div class="choices" id="interaction"></div>
 
-<div class="choices" id="choices"></div>
+  <script>
+    let questions = {{ questions | tojson }};
+    let index = 0;
+    let current = questions[index];
 
-<div class="choices" id="open-input" style="display:none;">
-  <input id="userInput" type="text" placeholder="Type your answer here...">
-  <button onclick="submitOpenAnswer()">Submit</button>
-</div>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+      document.body.classList.toggle("sidebar-active");
+    }
 
-<div id="result" class="message"></div>
-<button onclick="nextQuestion()" id="nextBtn" style="display:none; margin: 20px auto; display: block;">Next Question</button>
+    async function loadQuestion() {
+      document.getElementById("chatbox").innerHTML = "";
+      document.getElementById("interaction").innerHTML = "<div class='message bot'>Loading question...</div>";
 
-<script>
-let currentIndex = 0;
-const questions = {{ questions|tojson }};
-const isQCM = "{{ qtype }}" === "qcm";
+      if (!current) return;
 
-function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("active");
-  document.body.classList.toggle("sidebar-active");
-}
+      let questionText = current.question;
+      let choices = [];
 
-async function showQuestion(index) {
-  const q = questions[index];
-  document.getElementById("result").innerHTML = "";
-  document.getElementById("nextBtn").style.display = "none";
-  if (!q) return;
-  const chatbox = document.getElementById("chatbox");
-  const choicesBox = document.getElementById("choices");
-  const openInput = document.getElementById("open-input");
+      if ("{{ qtype }}" === "qcm") {
+        try {
+          const res = await fetch("/api/clarify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: questionText })
+          });
+          const data = await res.json();
+          questionText = data.question;
+          choices = data.choices;
+        } catch (e) {
+          console.error("clarify error", e);
+        }
+      }
 
-  chatbox.innerHTML = "<div class='message bot'>Loading question...</div>";
-  choicesBox.innerHTML = "";
-  openInput.style.display = isQCM ? "none" : "block";
+      const box = document.getElementById("chatbox");
+      box.innerHTML = `<div class='message bot'>${questionText}</div>`;
 
-  if (isQCM) {
-    const res = await fetch("/api/clarify", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question: q.question })
-    });
-    const data = await res.json();
-    chatbox.innerHTML = `<div class='message bot'>${data.question}</div>`;
-    data.choices.forEach(choice => {
-      const btn = document.createElement("button");
-      btn.textContent = choice;
-      btn.onclick = () => checkAnswer(q.chunk_id, choice[0]);
-      choicesBox.appendChild(btn);
-    });
-  } else {
-    chatbox.innerHTML = `<div class='message bot'>${q.question}</div>`;
-    document.getElementById("userInput").value = "";
-  }
-}
+      const area = document.getElementById("interaction");
+      area.innerHTML = "";
 
-async function checkAnswer(chunk_id, userLetter) {
-  const res = await fetch("/api/check", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chunk_id: chunk_id, user_answer: userLetter })
-  });
-  const data = await res.json();
-  const result = document.getElementById("result");
-  result.classList.add("bot");
-  result.innerHTML = data.correct === true ? `✅ Correct!<br>${data.explanation}` : `❌ Incorrect. Correct: ${data.correct_letter}<br>${data.explanation}`;
-  document.getElementById("nextBtn").style.display = "block";
-}
+      if ("{{ qtype }}" === "qcm") {
+        const wrapper = document.createElement("div");
+        wrapper.className = "choices";
+        choices.forEach((c, i) => {
+          const b = document.createElement("button");
+          b.textContent = c;
+          b.onclick = () => checkAnswer(c.charAt(0).toUpperCase());
+          wrapper.appendChild(b);
+        });
+        area.appendChild(wrapper);
+      } else {
+        const input = document.createElement("input");
+        input.id = "openInput";
+        input.type = "text";
+        input.placeholder = "Type your answer and press Enter...";
+        input.onkeydown = (e) => { if (e.key === "Enter") checkAnswer(input.value); };
+        area.appendChild(input);
 
-async function submitOpenAnswer() {
-  const userAnswer = document.getElementById("userInput").value;
-  const chunk_id = questions[currentIndex].chunk_id;
-  const res = await fetch("/api/open", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chunk_id, user_answer: userAnswer })
-  });
-  const data = await res.json();
-  const result = document.getElementById("result");
-  result.classList.add("bot");
-  result.innerHTML = data.explanation;
-  document.getElementById("nextBtn").style.display = "block";
-}
+        const submit = document.createElement("button");
+        submit.textContent = "Submit";
+        submit.onclick = () => checkAnswer(input.value);
+        area.appendChild(submit);
+      }
+    }
 
-function nextQuestion() {
-  currentIndex++;
-  if (currentIndex >= questions.length) {
-    document.getElementById("chatbox").innerHTML = "<div class='message bot'>✅ All questions done!</div>";
-    document.getElementById("choices").innerHTML = "";
-    document.getElementById("open-input").style.display = "none";
-    document.getElementById("nextBtn").style.display = "none";
-  } else {
-    showQuestion(currentIndex);
-  }
-}
+    async function checkAnswer(userInput) {
+      const box = document.getElementById("chatbox");
+      box.innerHTML += `<div class='message user'>${userInput}</div>`;
 
-window.onload = () => showQuestion(currentIndex);
-</script>
+      const route = "{{ qtype }}" === "qcm" ? "/api/check" : "/api/open";
+      const payload = {
+        chunk_id: current.chunk_id,
+        user_answer: userInput
+      };
 
+      try {
+        const res = await fetch(route, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        const reply = document.createElement("div");
+        reply.className = "message bot";
+        reply.textContent = data.explanation;
+        box.appendChild(reply);
+
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "Next Question";
+        nextBtn.onclick = () => {
+          index++;
+          current = questions[index];
+          loadQuestion();
+        };
+        document.getElementById("interaction").appendChild(nextBtn);
+
+      } catch (err) {
+        console.error("Answer check error", err);
+      }
+    }
+
+    loadQuestion();
+  </script>
 </body>
 </html>
