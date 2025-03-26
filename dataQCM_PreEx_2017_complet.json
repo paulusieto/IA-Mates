@@ -1,0 +1,132 @@
+[
+    {
+        "question_number": "1",
+        "question": "Giorgio validly filed an Italian patent application IT-G as a first filing. IT-G discloses a \nframe made of metal, preferably aluminium, for device X. IT-G was filed in April 2016 \nand withdrawn in May 2016. In September 2016, a frame made of steel for device X was \nmade available to the public in a catalogue. Today, 6 March 2017, Giorgio files a \nEuropean patent application EP-G claiming priority from IT-G. Claim 1 of EP-G is \ndirected to a frame made of metal for device X. Claim 2 of EP-G is directed to a frame \nmade of steel for device X. Claim 3 of EP-G is directed to a frame made of aluminium for \ndevice X. Claim 4 of EP-G is directed to a frame made of copper for device X.  \n \nFor each of the statements 1.1 \u2013 1.4, indicate on the answer sheet whether the \nstatement is true or false: \n \n1.1 \nThe catalogue is state of the art under Article 54(2) EPC for claim 1 of EP-G. \n1.2 \nThe catalogue is state of the art under Article 54(2) EPC for claim 2 of EP-G. \n1.3 \nThe catalogue is state of the art under Article 54(2) EPC for claim 3 of EP-G. \n1.4 \nThe catalogue is state of the art under Article 54(2) EPC for claim 4 of EP-G.",
+        "answer": {
+            "1": "False",
+            "2": "True",
+            "3": "False",
+            "4": "True"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_1"
+    },
+    {
+        "question_number": "2",
+        "question": "Jill filed the international application PCT-J on 4 August 2014 without claiming a priority. \nPCT-J was published with the international search report in February 2016. The \ninternational searching authority was the Nordic Patent Institute. Today, 6 March 2017, \nJill decides to enter the European phase before the EPO.  \n \nFor each of the statements 2.1 \u2013 2.4, indicate on the answer sheet whether the \nstatement is true or false: \n \n2.1 \nOne requirement for validly entering the European phase with PCT-J is that a \nrenewal fee must be paid.  \n2.2 \nOne requirement for validly entering the European phase with PCT-J is that the \ndesignation fee must be paid. \n2.3 \nFor entry into the European phase with PCT-J today, at least one fee for further \nprocessing must be paid.  \n2.4 \nFor PCT-J the EPO shall carry out a supplementary European search.",
+        "answer": {
+            "1": "True",
+            "2": "True",
+            "3": "False",
+            "4": "True"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_2"
+    },
+    {
+        "question_number": "3",
+        "question": "For each of the statements 3.1 \u2013 3.4, indicate on the answer sheet whether the \nstatement is true or false: \n \nThe following European patent application is pending today, 6 March 2017: \n \n3.1 \nA European patent application EP1, for which a reply to a communication under \nRule 71(3) EPC was to be filed at the latest on 2 March 2017, and for which the \napplicant did not file a reply.  \n3.2 \nA European patent application EP2, for which the renewal fee due on \n30 June 2016 has not yet been paid and for which the EPO sent a notice of loss \nof rights dated 2 February 2017. \n3.3 \nA European patent application EP3, which was refused by a written decision \ndated 28 December 2016. \n3.4 \nA European patent application EP4, for which the decision to grant the European \npatent is dated 6 March 2017.",
+        "answer": {
+            "1": "False",
+            "2": "False",
+            "3": "True",
+            "4": "True"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_3"
+    },
+    {
+        "question_number": "4",
+        "question": "Today, 6 March 2017, Adrienn filed with the EPO a European patent application EP-A. \nAdrienn is resident in Hungary. The application documents of EP-A consist of a \ndescription in Hungarian and of two drawings. \n \nFor each of the statements 4.1 \u2013 4.4, indicate on the answer sheet whether the \nstatement is true or false: \n \n4.1 \nAdrienn is entitled to a reduction of the filing fee.  \n4.2 \nAccording to the provisions of the EPC, Adrienn must file one or more claims \nwithin two months of filing of EP-A.  \n4.3 \nAccording to the provisions of the EPC, Adrienn must file the translation of the \ndescription within two months of filing of EP-A. \n4.4 \nAccording to the provisions of the EPC, Adrienn must pay the filing fee within two \nmonths of filing of EP-A.",
+        "answer": {
+            "1": "True",
+            "2": "False",
+            "3": "True",
+            "4": "False"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_4"
+    },
+    {
+        "question_number": "5",
+        "question": "A notice of appeal was validly filed on 3 February 2017 against the decision to refuse the \nEuropean patent application EP-B. The decision is dated 5 December 2016. According \nto the decision, claim 1 of the sole request is not novel over D1 and is not inventive over \nD2 in combination with the common general knowledge of the skilled person. The \nstatement setting out the grounds of appeal has not yet been filed. \n \nFor each of the statements 5.1 \u2013 5.4, indicate on the answer sheet whether the \nstatement is true or false: \n \n5.1 \nThe statement setting out the grounds for the appeal must be filed at the latest on \n5 April 2017. \n5.2 \nThe appeal fee is reimbursed, if the applicant withdraws the appeal today, \n6 March 2017.  \n5.3 \nAccording to the provisions of the EPC, if the appeal is not allowed within four \nmonths of receipt of the statement of grounds, it shall be remitted to the Board of \nAppeal. \n5.4 \nThe examining division will grant interlocutory revision, if the applicant can \nconvince the examining division that claim 1 of the sole request is novel over D1.",
+        "answer": {
+            "1": "False",
+            "2": "True",
+            "3": "False",
+            "4": "False"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_5"
+    },
+    {
+        "question_number": "6",
+        "question": "The mention of the grant of European patent EP-V was published on 18 May 2016. A \nnotice of opposition against EP-V was filed on 20 February 2017 with the EPO. Today is \n6 March 2017. \n \nFor each of the statements 6.1 \u2013 6.4, indicate on the answer sheet whether the \nstatement is true or false: \n \n6.1 \nThe notice of opposition was filed within the opposition period.  \n6.2 \nIf the opposition fee has not been paid so far, then the opposition will not be \ndeemed to have been filed.  \n6.3 \nIf the opposition is not admissible because the facts and evidence filed in the \nnotice of opposition do not support the grounds for opposition, a valid option for \nthe opponent is to file additional, more relevant documents later in the \nproceedings. \n6.4 \nIf the notice of opposition does not mention the name of the patent proprietor, the \nopponent will have the opportunity to remedy this deficiency.",
+        "answer": {
+            "1": "True",
+            "2": "True",
+            "3": "False",
+            "4": "True"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_6"
+    },
+    {
+        "question_number": "7",
+        "question": "A European patent EP-M was granted with only one claim. The claim reads:  \n \n\u201cA steel composition M.\u201d \n \nAn admissible opposition was filed against EP-M and the ground for opposition is lack of \nnovelty. The notice of opposition was communicated to the patent proprietor who in reply \nfiled an amended claim as the main request. The amended claim reads: \n \n\u201cA very thin layer of steel composition M.\u201d \n \nThe amendment is based on the description of EP-M as originally filed. \n \nFor each of the statements 7.1 \u2013 7.4, indicate on the answer sheet whether the \nstatement is true or false: \n \n7.1 \nThe amended claim is admissible under Rule 80 EPC only if the amended claim \nis novel over the cited prior art. \n7.2 \nThe opponent cannot validly object to clarity of the amended claim, since lack of \nclarity is not a ground for opposition.  \n7.3 \nThe patent proprietor is entitled to file amendments in reply to the \ncommunication informing him of the notice of opposition. \n7.4 \nThe current request of the patent proprietor is to reject the opposition.",
+        "answer": {
+            "1": "False",
+            "2": "False",
+            "3": "True",
+            "4": "False"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_7"
+    },
+    {
+        "question_number": "8",
+        "question": "The examining division issued a communication under Article 94(3) EPC for European \npatent application EP-R. The communication is dated 7 September 2016. The period set \nin this communication is four months. On 31 December 2016, the representative for  \nEP-R fell in a state of legal incapacity and the EPO was informed of it on \n10 January 2017. On 12 January 2017, the legal division of the EPO decided to interrupt \nthe proceedings regarding EP-R. Today, 6 March 2017, the EPO is informed of the \nappointment of a new representative for EP-R. \n \nFor each of the statements 8.1 \u2013 8.4, indicate on the answer sheet whether the \nstatement is true or false: \n \n8.1 \nThe communication is deemed to be delivered on 19 September 2016, since \n17 September 2016 is on a Saturday.  \n8.2 \nThe proceedings are interrupted with effect of 12 January 2017. \n8.3 \nAfter resumption of the proceedings for EP-R, the communication dated \n7 September 2016 will be considered null and void and will be notified anew to \nthe new representative. \n8.4 \nFor interruption of the proceedings, no administrative fee has to be paid.",
+        "answer": {
+            "1": "False",
+            "2": "False",
+            "3": "False",
+            "4": "True"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_8"
+    },
+    {
+        "question_number": "9",
+        "question": "Today, 6 March 2017, an applicant wishes to file a new European patent application to \nprotect an invention relating to the treatment of disease X using a substance Z. A pre-\npublished scientific article discloses the use of substance Z for treating the disease Y. \nDisease Y and disease X are diseases of the human body. Disease Y is completely \nunrelated to disease X.  \n \nFor each of the statements 9.1 \u2013 9.4, indicate on the answer sheet whether the \nstatement is true or false: \n \nThe following claim complies with the requirements of the EPC: \n \n9.1 \nUse of substance Z for the manufacture of a medicament for treating disease X.  \n9.2 \nSubstance Z for use in the treatment of disease X.  \n9.3 \nMethod for treating disease X using substance Z.  \n9.4 \nSubstance Z for use as a medicament.",
+        "answer": {
+            "1": "False",
+            "2": "True",
+            "3": "False",
+            "4": "False"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_9"
+    },
+    {
+        "question_number": "10",
+        "question": "The international application PCT-A was validly filed on 4 January 2017 with the EPO. \nPCT-A validly claims the priority from a Dutch patent application NL-A, filed on \n31 January 2016. Today, 6 March 2017, the international search report for PCT-A was \ntransmitted to the applicant.  \n \nFor each of the statements 10.1 \u2013 10.4, indicate on the answer sheet whether the \nstatement is true or false: \n \n10.1 An international preliminary examination of PCT-A before the EPO can be validly \nrequested on 30 November 2017. \n10.2 A handling fee is due for requesting the international preliminary examination of \nPCT-A before the EPO.  \n10.3 The applicant is entitled to communicate orally with the EPO as the International \nPreliminary Examination Authority. \n10.4 If amended claims for PCT-A are received by the International Bureau before the \ntechnical preparations for international publication have been completed, then the \ninternational publication of PCT-A will also contain the text of the amended \nclaims.",
+        "answer": {
+            "1": "True",
+            "2": "True",
+            "3": "True",
+            "4": "True"
+        },
+        "type": "qcm_tf",
+        "source": "PreEx_2017",
+        "chunk_id": "PreEx_2017_qcm_tf_10"
+    }
+]

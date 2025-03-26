@@ -1,0 +1,122 @@
+[
+    {
+        "question_number": "1",
+        "question": "An international application is published, together with the search report drawn up by the CNIPA, 18 months + 1 day after the filing date (no priority claimed). The application has no more than 35 pages and 15 claims. Which statement reflects all actions the CN applicant needs to take for entry into the EP phase 25 months after the filing date? A request for early processing has been filed. A. Complete and file Form 1200 and pay the filing fee and the search fee B. Complete and file Form 1200 and pay the filing fee, the search fee and the renewal fee for the third year C. Complete and file Form 1200, pay the filing fee and the search fee and appoint a representative D. None of the above statements",
+        "answer": "D. \n \nLegal basis \nRule 159(1) EPC The examination fee and designation fee must also be paid (six months after publication of search report; payment cannot be postponed to 31 months if there is a wish to enter into the European phase at 25 months).",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_1"
+    },
+    {
+        "question_number": "2",
+        "question": "A European patent application was filed on 6 February 2023. The search, filing and designation fees were paid within a month of the date of filing. What is the latest point in time for withdrawing the application, if the applicant wishes to obtain a refund of the designation fee? A. Six months after the date of mention of the publication of the European search report B. Date of mention of the publication of the European search report C. The designation fee was validly paid and can no longer be refunded D. Date of the start of substantive examination",
+        "answer": "B. Legal basis Guidelines for Examination in the EPO, A-X, 5.2.2 “The designation fee falls due upon publication of the mention of the European search report. It may be paid within six months of the mentioned date of publication (Rules 39(1), 17(3) and 36(4)). Where paid before the due date, e.g. upon filing of the application, the designation fee will however be retained by the EPO. These payments will only be considered valid as from the due date, provided that the amount paid corresponds to the amount payable on the due date (...)”",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_2"
+    },
+    {
+        "question_number": "3",
+        "question": "On 10 October 2024, an applicant files a request for entry into the European phase, \ntogether with a debit order, according to which the filing fee, the designation fee, the \nexamination fee and the renewal fee for the third year are to be debited from the \napplicant\u2019s deposit account. It is specified that the debit order is to be executed on \n18 October 2024. On the evening of 10 October 2024, the applicant notices that the \nrenewal fee is not yet due and should not be debited from the deposit account.  \nWhat is the latest point in time for revoking the order to debit the renewal fee in Central \nFee Payment (CFP)? \nA. \n10 October 2024  \nB. \n17 October 2024 \nC. \n18 October 2024 \nD. \nA debit order cannot be revoked in part",
+        "answer": "B Legal basis OJ EPO 2024, Supplementary Publication 2, Arrangements for deposit accounts (ADA), 13.2 “13.2: A debit order with a deferred payment date (...) may be revoked in whole or in part in Central Fee Payment until one day before the date specified as the execution date at the latest.”",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_3"
+    },
+    {
+        "question_number": "4",
+        "question": "The applicant received a communication pursuant to Article 90(3) EPC and Rule 60 \nEPC, requesting them to file a designation of inventor but missed the time limit for filing \na response. After expiry of the time limit, the Receiving Section issued a decision to \nrefuse the European patent application, dated 10 October 2024.  \nWhat can the applicant do to remedy the situation? \nA. \nFile a notice of appeal against the decision within four months of notification of \nthe decision \nB. \nFile a request for further processing within two months of notification of the \ndecision \nC. \nFile, within two months of notification of the decision, a request for \nre-establishment of rights in respect of the time limit for filing the designation of inventor \nD. \nA, B and C are correct",
+        "answer": "B. Legal basis Articles 106 and 108 EPC; Article 121(1) EPC; Guidelines for Examination in the EPO, E-VIII, 2 A notice of appeal could also be filed within two months of notification of the decision; re-establishment of rights is excluded because further processing is available.",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_4"
+    },
+    {
+        "question_number": "5",
+        "question": "Which of the following statements about filing third-party observations is correct? \nA. \nThe person that filed third-party observations will be a party to the proceedings \nbefore the EPO, and the applicant is obliged to respond to third-party observations \nB. \nThird-party observations must be filed in writing and may not be filed \nanonymously \nC. \nThird-party observations are considered by the examining division only if they \ninclude a statement of the grounds on which they are based, and an official fee is paid \nD. \nThird-party observations can be filed after the publication of a European patent \napplication and must be filed in an official language of the EPO",
+        "answer": "D. Legal basis Article 115 EPC, Rule 114 EPC; Guidelines for Examination in the EPO, E-VI.3 A. Incorrect: a third party filing observations concerning the patentability of an application or patent is not a party to the proceedings; the applicant may respond to third-party observations but is not obliged to do so B. Incorrect: third-party observations may be filed anonymously C. Incorrect: there is no official fee when filing third-party observations D. Correct",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_5"
+    },
+    {
+        "question_number": "6",
+        "question": "You filed an international patent application on 6 June 2024, claiming the priority of \na European patent application filed on 7 July 2023. You received a communication \ndated 25 September 2024 from the EPO acting as International Searching Authority \n(ISA), stating that the requirement of unity of invention has not been complied with. \nThe ISA identifies three inventions. You are invited to pay two additional search fees.  \nWhich of the following statements is correct? \nA. \nYou must pay two additional search fees by 25 October 2024 \nB. \nYou do not need to file a response to the provisional opinion accompanying the \npartial search results  \nC. \nIf you pay two additional search fees under protest, you must pay two protest \nfees within the time limit  \nD. \nIf you do not pay any additional search fees within the time limit, the international \npatent application will be deemed to be withdrawn",
+        "answer": "B. Legal basis Rule 40 PCT A. Incorrect: may be paid but not must be paid B. Correct C. Incorrect: only one protest fee is due (Rule 40.2(e) PCT) D. Incorrect: if the applicant does not pay any additional search fees, the information appearing in the invitation to pay additional fees will be considered to be the result of the international search and will be included as such in the international search report ",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_6"
+    },
+    {
+        "question_number": "7",
+        "question": "An international patent application filed with the EPO as receiving Office on \n10 September 2024, claims the priority of a Luxembourg patent application filed on \n11 October 2023. No certified copy of the Luxembourg patent application was filed at \nthe time of filing of the international patent application. \n \nWhich of the following actions can be taken to file a certified copy of the Luxembourg \npatent application for this international patent application? \n \nA. \nRequest the Luxembourg Intellectual Property Office to prepare and send a \ncertified copy of the Luxembourg patent application to the EPO \nB. \nSubmit a valid DAS code (Digital Access Service) to the International Bureau to \nenable it to obtain a certified copy of the Luxembourg patent application \nC. \nFile an electronic certified copy of the Luxembourg patent application with the \nEPO \nD. \nFile a certified copy of the Luxembourg patent application with the International \nBureau",
+        "answer": "D. Legal basis PCT Applicant's Guide 5.070.; Guidelines for Examination in the EPO A-III, 6.7; PCT Applicant’s Guide LU-Luxembourg A. Only available if the priority application and the PCT application are filed with the same patent office B. Incorrect: the LPTO does not use the DAS access code C. Incorrect: the LPTO does not issue electronic priority documents D. Correct",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_7"
+    },
+    {
+        "question_number": "8",
+        "question": "Firm A owns a European patent, EP. Firm B filed an opposition against EP, \nrequesting its revocation. Firm B argued that the subject-matter of the granted claims \nwas not new in view of document D1. \nDuring the opposition proceedings, firm C filed observations under Art. 115 EPC, \narguing that the subject-matter of the granted claims was not new in view of document \nD2. \nFirm A requested maintenance of the patent as granted, or maintenance in amended \nform, according to auxiliary request 1. \nWhich of the following statements is correct? \nA. \nAt the end of the opposition proceedings, the opposition division decided to \nrevoke the patent. Firm B is entitled to file an appeal against the opposition division's \ndecision. \nB. \nAt the end of the opposition proceedings, the opposition division decided to \nmaintain the patent in amended form according to firm A's auxiliary request 1. Firm A \nand firm B are entitled to file an appeal against the opposition division's decision. \nC. \nAt the end of the opposition proceedings, the opposition division decided to \nmaintain the patent as granted. Firm C is entitled to file an appeal against the \nopposition division's decision. \nD. \nDuring the opposition proceedings, firm B withdrew its opposition. At the end of \nthe opposition proceedings, the opposition division decided to maintain the patent as \ngranted. Firm B is entitled to file an appeal against the opposition division's decision.",
+        "answer": "B. Legal basis Article 107 EPC A. Incorrect: B is not adversely affected B. Correct: both parties A and B are adversely affected C. Incorrect: third parties are not parties to the proceedings D. Incorrect: withdrew its opposition; no longer a party to the proceedings",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_8"
+    },
+    {
+        "question_number": "9",
+        "question": "European patent application EP-X was filed on 1 October 2020, claiming the priority \nof a Belgian application filed on 16 October 2019. The mention of the grant of European \npatent EP-X was published on 2 October 2024. The proprietor filed a request for unitary \neffect and was informed by communication dated 10 October 2024, that unitary effect \nhad been registered for EP-X-C0 on the same date. \n \nWhich of the following statements is correct? \n \nA. \nA renewal fee still has to be paid by 31 October 2024 in respect of the 5th year \nfor EP-X \nB. \nA renewal fee is due on 31 October 2024 in respect of the 5th year for EP-X-C0  \nC. \nA renewal fee is due on 31 October 2024 in respect of the 6th year for EP-X-C0 \nD. \nNo renewal fee has to be paid on 31 October 2024",
+        "answer": "D. Legal basis Guidelines for Examination in the EPO, A-X, 5.2.4 The renewal fee that would have been due on 31 October had to be paid for the decision to grant to be issued (this is one of the warnings in the communication under Rule 71(3) EPC).",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_9"
+    },
+    {
+        "question_number": "10",
+        "question": "A communication under Article 94(3) EPC, setting a four-month time limit for reply \nis dated 12 September 2024. The applicant receives the letter on 21 September 2024, \nas evidenced by the postal receipt signed by him.  \n \nWhat is the last day for replying to the communication? \n \nA. \n13 January 2025 \nB. \n12 January 2025 \nC. \n22 January 2025 \nD. \n14 January 2025",
+        "answer": "D. Legal basis Rule 126(2) EPC The document was delivered to the addressee nine days after the date it bears, so the period expires later by the number of days by which the seven days were exceeded, i.e. 12 January 2025 + two days. Evidence of late receipt needs to be filed with the response.",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_10"
+    },
+    {
+        "question_number": "11",
+        "question": "Which functionalities or services can be accessed directly from MyEPO Portfolio?   \n \nA. \nA shared area with examiners, European Patent Register, filing via the EPO\u2019s \nonline filing software eOLF  \nB. \nMailbox, a shared area with examiners, replying to a communication under \nArticle 94(3) EPC \nC. \nMailbox, patent search via publication server, a shared area with examiners   \nD. \nFiling via the EPO\u2019s Online Filing 2.0, patent search via publication server, \nMailbox",
+        "answer": "B. Legal basis https://www.epo.org/en/applying/myepo-services/interact A. Incorrect: it is neither possible to access the European Patent Register nor to file using the EPO’s legacy Online Filing software (eOLF) via MyEPO Portfolio B. CorrectC. Incorrect: it is not possible to access the European Publication Server via MyEPO Portfolio D. Incorrect: it is neither possible to access the European Publication Server nor to file using the EPO’s Online Filing 2.0 via MyEPO Portfolio",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_11"
+    },
+    {
+        "question_number": "12",
+        "question": "In which of the following situations does the EPO recommend using the EPO \nContingency Upload Service? \n \nA. \nWhen you submit documents after business hours \nB. \nWhen the EPO filing systems are functioning correctly, but you encounter a \ntechnical issue at your end \nC. \nWhen there is a system outage at the EPO that prevents document submission \nvia the standard filing systems  \nD. \nWhen the EPO is closed due to an official holiday",
+        "answer": "C. Legal basis OJ EPO 2023, A50, point 20; Contingency Upload Service |epo.org",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_12"
+    },
+    {
+        "question_number": "13",
+        "question": "Applicant Korhonen is a Finnish national resident in Finland. He filed a European \npatent application in Finnish and provided an English translation in time. In response \nto the extended European search report (EESR), Korhonen wishes to file amended \nclaims together with a request for examination.  \n \nWhich of the following statements is correct? \n \nA. \nKorhonen must file the amended claims in Finnish and must then  provide \na \ntranslation into English, in time \nB. \nKorhonen is allowed to file the amended claims in Finnish if he then provides a \ntranslation into any official language of the EPO, in time \nC. \nKorhonen is allowed to file the amended claims in Finnish if he then provides a \ntranslation into English, in time \nD. \nKorhonen is not allowed to file the amended claims in Finnish",
+        "answer": "C. Legal basis Guidelines for Examination in the EPO, A-VII, 3.2; Rule 3(2) EPC Since the response with the amendments has to be filed within a time limit, the Finnish applicant is entitled to file the amended claims in Finnish. A translation of a document filed in an admissible non-EPO language into an official language of the EPO must be filed within a non-extendable period of one month (Rule 6(2) EPC). This means that a translation of the amended claims must be filed in the language of proceedings, English in this case (Rule 3(2) EPC).",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_13"
+    },
+    {
+        "question_number": "14",
+        "question": "Applicants may request processing of their international application under PCT \nDirect by filing a letter (\"PCT Direct letter\") containing informal comments, aimed at \novercoming objections raised in the search opinion established by the EPO for the \npriority application.  \n \nWhich of the following statements is NOT correct?  \n \nA. \nPCT Direct is available if the priority application is a Belgian application filed in \nFrench, which has been searched and the international application is filed in French, \nusing ePCT-Filing \nB. \nPCT Direct is available if the priority application is an EP application filed in \nFrench, which has been searched and the international application is filed in English, \nusing Online Filing 2.0 \nC. \nPCT Direct is available if the priority application is an international application \nfiled with the EPO in English, which has been searched by the EPO and the subsequent \ninternational application is filed in English, using Online Filing 2.0 \nD. \nPCT Direct is available on condition that amended claims are filed with the PCT \nDirect letter, in a single PDF document",
+        "answer": "D. Legal basis PCT-EPO Guidelines, B-IV, 1.2. Comments are required but not amendments.",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_14"
+    },
+    {
+        "question_number": "15",
+        "question": "Mr Linguist filed a European patent application in Dutch and used English as \nlanguage of the proceedings. When requesting unitary effect on 10 October 2024, \nMr Linguist must provide a translation of the specification.  \n \nMr Linguist would like to obtain immediate registration of the unitary effect. Which of \nthe following statements is correct? \n \nA. \nMr Linguist must provide a translation of the specification into Dutch \nB. \nMr Linguist must provide a translation of the specification into an official \nlanguage of any of the 18 states to which the unitary effect extends  \nC. \nMr Linguist must provide a translation of the specification into an official \nlanguage of any of the 24 states that have signed the UPCA \nD. \nMr Linguist may provide a translation of the specification into Spanish",
+        "answer": "D. Legal basis Article 6(1) Regulation (EU) No 1260/2012; Rule 6(2)(d) UPR; Unitary Patent Guide, para. 65 The translation may be in any of the 24 official languages of the EU, except English, irrespective of the language in which the application was filed or the geographical extent of the unitary effect.",
+        "type": "qcm",
+        "source": "EPAC_2024",
+        "chunk_id": "EPAC_2024_qcm_15"
+    }
+]

@@ -1,0 +1,122 @@
+[
+    {
+        "question_number": "1",
+        "question": "An applicant receives two communications from the EPO on 5 April 2022. Both\u202fcommunications are \ndated 31 March 2022. The first communication relates to the international\u202fapplication PCT-S and the \nsecond communication relates to European patent application EP-S.\u202f\u202f\u202f  \n\u202f\u202f\u202f  \nA. If a period of one month is set for replying to the communication relating to PCT-S, that time limit will \nexpire on 10 May 2022.\u202f  \nB. If a period of two months is set for replying to the communication relating to PCT-S, that time limit will \nexpire on 7 June 2022.\u202f  \nC. The communication relating to EP-S will be deemed to have been notified on Sunday, 10 April 2022.\u202f  \nD. If a period of four months is set for replying to the communication relating to EP-S, that time limit will \nexpire on 11 August 2022.",
+        "answer": "C",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_1"
+    },
+    {
+        "question_number": "2",
+        "question": "An applicant resident in San Marino validly filed a European patent application last week.\u202f\u202f\u202f   \nHe appointed the professional representative before the EPO, Mr. A, to\u202fhelp him prosecute the \napplication.\u202f\u202fMr A started with the prosecution but due to personal problems he had to inform the EPO that \nhe withdraws his representation. Mr A informed the EPO that Mr B, a professional representative from \nanother association will take over.\u202f   \n\u202f\u202f\u202f   \nA. The applicant needs to be represented by a professional representative before the EPO.\u202f\u202f\u202f   \nB. In order for Mr. A to validly represent the applicant, a signed authorisation had to be filed with the \nEPO.\u202f\u202f\u202f   \nC. Mr. B does not need to provide a signed authorisation.    \nD. The change of professional representative is not registered until an administrative fee for the \nregistration has been paid.",
+        "answer": "C",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_2"
+    },
+    {
+        "question_number": "3",
+        "question": "The EPO will refund:\u202f\u202f  \n\u202f\u202f  \nA. The opposition fee in full if the opposition is withdrawn before the notice of opposition is communicated \nto the patent proprietor.\u202f\u202f  \nB. The examination fee at a rate of 75 % if the European patent application is withdrawn two weeks after \nreceipt of the first communication pursuant to Article 94(3) EPC issued by the examining division.\u202f\u202f  \nC. The appeal fee in part if the appeal is withdrawn before the filing of the statement of grounds of appeal \nand before the period for filing that statement has expired.\u202f\u202f\u202f\u202f  \nD. The examination fee in full if the European patent application is withdrawn before the examining division \nhas assumed responsibility for it.",
+        "answer": "D",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_3"
+    },
+    {
+        "question_number": "4",
+        "question": "The decision to grant a European patent is dated 2 June 2022. It was handed over to the internal EPO \npostal service on 27 May 2022. The mention of the grant of the patent is published on 29 June 2022. What is \nthe last day for validly filing a divisional application?\u202f  \n\u202f\u202f  \nA. 2 June 2022\u202f  \nB. 28 June 2022\u202f  \nC. 26 May 2022\u202f  \nD. 29 June 2022",
+        "answer": "B",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_4"
+    },
+    {
+        "question_number": "5",
+        "question": "Mr. Mateo validly filed a first Italian patent application on 18 September 2021. He intends to claim \npriority of this first patent application in a later European patent application. Which answer is correct?\u202f  \n \nA. The last day for validly claiming priority is 18 September 2022.  \nB. If Mr. Mateo had filed an Italian utility model application instead of an Italian patent application, it would \nnot have been possible to claim priority from the Italian utility model application.\u202f\u202f  \n \n \n2 \nC. Mr. Mateo can claim priority from the Italian patent application even if the Italian patent application is \nabandoned before filing of the European patent application.\u202f\u202f  \nD. The priority declaration had to be made at the latest on 18 November 2022.",
+        "answer": "C",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_5"
+    },
+    {
+        "question_number": "6",
+        "question": "The European Patent Bulletin mentioned the publication of the European search report of the European \npatent application \u201cDisplay Device\u201d on 11 May 2022. The European patent application has 20 claims. The \nopinion accompanying the European search report mentions several deficiencies in the mentioned \nEuropean patent application.\u202f\u202f  \nWhich one of the actions below must be taken within the time limit set in the \u201cCommunication pursuant to \nRules 70(2) EPC and 70a(2) EPC and reference to Rule 39(1) EPC\u201d to avoid the European patent application \nbeing deemed to be withdrawn?\u202f  \n \nA. payment of 5 claims fees\u202f  \nB. payment of the examination fee\u202f  \nC. payment of the extension fees\u202f  \nD. filing a substantive reply to the European search opinion",
+        "answer": "D",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_6"
+    },
+    {
+        "question_number": "7",
+        "question": "You filed a European patent application with the European Patent Office on 21 April 2022 and paid the \nsearch fee on 11 May 2022. Which of the following statement(s) is/are correct?\u202f  \n\u202f\u202f  \nI. You will receive a Communication under Rule 64 EPC if the search division finds that your European patent \napplication does not fulfill the requirement of unity of invention.\u202f  \n\u202f\u202f  \nII. You will receive an invitation pursuant to Rule 62a(1) EPC if the search division finds that there are too \nmany independent claims in your European patent application.\u202f  \n\u202f\u202f  \nA. Only statement I is correct\u202f  \nB. Only statement II is correct\u202f  \nC. Both statements are correct\u202f  \nD. Both statements are incorrect",
+        "answer": "C",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_7"
+    },
+    {
+        "question_number": "8",
+        "question": "On 27 August 2021, the German applicant Susanne validly filed the German patent application DE-S. On \n21 June 2022, the German applicant Walter filed the European patent application EP-W claiming priority \nfrom DE-S. On 1 July 2022, Walter states in a letter to the EPO that he is entitled to claim priority from DE-S. \nEnclosed to the letter is a contract signed by Susanne and Walter on 15 June 2022. According to the \ncontract, the priority right from DE-S is transferred from Susanne to Walter.\u202f  \n  \nA. According to the provisions of the EPC, a declaration of priority must be made within fourteen months \nfrom the earliest priority date claimed.\u202f  \nB. The priority is not validly claimed because the evidence of the transfer of the priority right from DE-S was \nfiled after the date of filing of EP-W.\u202f  \nC. One of the requirements for the validity of the priority right from DE-S is that the transfer of the priority \nright must have taken place before the date of filing of EP-W.\u202f  \nD. One of the requirements for the validity of the priority right from DE-S is that the transfer of the priority \nright must have taken place before the date of filing of DE-S.",
+        "answer": "C",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_8"
+    },
+    {
+        "question_number": "9",
+        "question": "In a communication dated 7 December 2021 the examining division has informed the applicant of the \ntext in which it intends to grant the European patent and invites the applicant to pay the fee for grant and \npublishing and to file a translation of the claims in the two official languages of the European Patent Office \nother than the language of the proceedings.\u202f\u202fBy what date did the fee for grant and publishing have to be \npaid and the translations of the claims in the two other official languages have to be filed?   \n  \n \n \n3 \nA. 19 April 2022\u202f  \nB.  17 April 2022\u202f  \nC.  7 April 2022\u202f  \nD. 18 April 2022",
+        "answer": "A",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_9"
+    },
+    {
+        "question_number": "10",
+        "question": "An international patent application was filed at the European Patent Office as Receiving Office. The \nclaims of this international patent application may be amended in the international phase.\u202f\u202f  \nWhich of the following statements is correct?\u202f\u202f  \n\u202f\u202f  \nA. The applicant is entitled to amend the claims under Art. 19 PCT; these amendments under Art. 19 PCT \nmust be filed with the European Patent Office.\u202f\u202f  \nB. The applicant is entitled to amend the claims under Art. 34 PCT without filing a demand for international \npreliminary examination.\u202f\u202f  \nC. The applicant is entitled to amend the claims under Art. 19 PCT; these amendments under Art. 19 PCT \nmust be filed with the International Bureau.\u202f\u202f  \nD. The applicant is entitled to amend the claims under Art. 34 PCT; these amendments under Art. 34 PCT \ncan only be filed with the International Bureau.",
+        "answer": "C",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_10"
+    },
+    {
+        "question_number": "11",
+        "question": "You have recently filed an international patent application with the International Bureau as Receiving \nOffice.\u202f The applicant is a national and resident of Switzerland.\u202f   \n\u202f  \nToday, you request the addition of a second applicant under PCT Rule 92bis. This co-applicant resides in \nSwitzerland but is a national of the US.\u202f    \n\u202f   \nIs it possible at this stage to have the USPTO carry out the international search?\u202f   \n\u202f   \nA. Yes, but only if the international search has not started yet.\u202f   \nB. Yes, even if the international search has already started.\u202f   \nC. No, the USPTO is not an International Searching Authority.\u202f   \nD. No, the situation at the time of filing will determine the competent International Searching\u202fAuthority.",
+        "answer": "D",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_11"
+    },
+    {
+        "question_number": "12",
+        "question": "An international patent application was filed on 6 July 2022 claiming priority of 2 July 2021. Can the \npriority right be restored in the European regional phase?\u202f  \n\u202f  \nA. No, the 12-month priority period is over  \nB. Yes, by requesting further processing\u202f  \nC. Yes, the applicant can obtain restoration of the priority right, provided they show that the priority \ndeadline was\u202fmissed unintentionally\u202f  \nD. Yes, the applicant can obtain restoration of the priority right, provided they show that the priority \ndeadline was missed although all due care was taken",
+        "answer": "D",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_12"
+    },
+    {
+        "question_number": "13",
+        "question": "GUAPA a company located in Mexico, filed the international patent application PCT-G in Spanish on 11 \nJune 2020, claiming a priority of GUAPA-N filed on 16 December 2019. PCT-G was published with the \ninternational search report in June 2021. The international searching authority was the Spanish Patent \nOffice. On 2 July 2022, GUAPA decides to enter the European phase before the EPO.\u202f\u202f\u202f  \n\u202f\u202f\u202f  \nA. For PCT-G the EPO will not carry out a supplementary European search.\u202f\u202f\u202f\u202f\u202f  \nB. One requirement for validly entering the European phase with PCT-G is to appoint a professional \nrepresentative.\u202f  \nC. For entry into the European phase with PCT-G on 2 July 2022, at least one fee for further processing must \nbe paid.\u202f\u202f\u202f  \n \n \n4 \nD. One requirement for validly entering the European phase with PCT-G is that the designation fee must be \npaid.",
+        "answer": "D",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_13"
+    },
+    {
+        "question_number": "14",
+        "question": "Ms Kim, a Korean natural person, wishes to enter the European phase with the international application \nPCT-X as second filing on 5 April 2022, claiming the priority of a Korean national application. Ms Kim is \nresident in South Korea. PCT-X was filed in Korean in September 2019. PCT-X was published in Korean.  \nWhich of the following statements is correct: \u202f\u202f  \n\u202f\u202f\u202f  \nA. A translation of PCT-X must be filed with the EPO within two months from entry into the European \nphase.\u202f\u202f\u202f  \nB. If a translation of PCT-X is not filed in due time, a possible remedy is to request re-establishment of \nrights.\u202f\u202f\u202f  \nC. Errors in the translation can be corrected only until grant of the patent. \u202f\u202f\u202f  \nD. Ms Kim is entitled to a reduction of the filing fee.",
+        "answer": "B",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_14"
+    },
+    {
+        "question_number": "15",
+        "question": "A validly filed PCT application is not yet published. Is it possible to enter the European phase before the \nEPO prior to the international publication?\u202f\u202f  \n\u202f\u202f  \nA. Yes, it is always possible \u202f  \nB. Yes, but only if the international search report has been sent\u202f\u202f  \nC. Yes, but only if an early processing fee is paid  \nD. It is not possible",
+        "answer": "A",
+        "type": "qcm",
+        "source": "MOCK2",
+        "chunk_id": "MOCK2_qcm_15"
+    }
+]
