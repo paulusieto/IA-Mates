@@ -28,105 +28,109 @@
   <div class="choices" id="interaction"></div>
 
   <script>
-    let questions = {{ questions | tojson }};
-    let index = 0;
-    let current = questions[index];
+  let questions = {{ questions | tojson }};
+  let index = 0;
+  let current = questions[index];
 
-    function toggleSidebar() {
-      document.getElementById("sidebar").classList.toggle("active");
-      document.body.classList.toggle("sidebar-active");
-    }
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+    document.body.classList.toggle("sidebar-active");
+  }
 
-    async function loadQuestion() {
-      document.getElementById("chatbox").innerHTML = "";
-      document.getElementById("interaction").innerHTML = "<div class='message bot'>Loading question...</div>";
+  async function loadQuestion() {
+    const box = document.getElementById("chatbox");
+    const area = document.getElementById("interaction");
+    box.innerHTML = "";
+    area.innerHTML = "<div class='message bot'>Loading question...</div>";
 
-      if (!current) return;
+    if (!current) return;
 
-      let questionText = current.question;
-      let choices = [];
+    let questionText = current.question;
+    let choices = [];
 
-      if ("{{ qtype }}" === "qcm") {
-        try {
-          const res = await fetch("/api/clarify", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question: questionText })
-          });
-          const data = await res.json();
-          questionText = data.question;
-          choices = data.choices;
-        } catch (e) {
-          console.error("clarify error", e);
-        }
-      }
-
-      const box = document.getElementById("chatbox");
-      box.innerHTML = `<div class='message bot'>${questionText}</div>`;
-
-      const area = document.getElementById("interaction");
-      area.innerHTML = "";
-
-      if ("{{ qtype }}" === "qcm") {
-        choices.forEach((c, i) => {
-          const b = document.createElement("button");
-          b.textContent = c;
-          b.onclick = () => checkAnswer(c.charAt(0).toUpperCase());
-          area.appendChild(b);
-        });
-      } else {
-        const input = document.createElement("input");
-        input.id = "openInput";
-        input.type = "text";
-        input.placeholder = "Type your answer and press Enter...";
-        input.onkeydown = (e) => { if (e.key === "Enter") checkAnswer(input.value); };
-        area.appendChild(input);
-
-        const submit = document.createElement("button");
-        submit.textContent = "Submit";
-        submit.onclick = () => checkAnswer(input.value);
-        area.appendChild(submit);
-      }
-    }
-
-    async function checkAnswer(userInput) {
-      const box = document.getElementById("chatbox");
-      box.innerHTML += `<div class='message user'>${userInput}</div>`;
-
-      const route = "{{ qtype }}" === "qcm" ? "/api/check" : "/api/open";
-      const payload = {
-        chunk_id: current.chunk_id,
-        user_answer: userInput
-      };
-
+    // Clarify QCM format: split into question + choices
+    if ("{{ qtype }}" === "qcm") {
       try {
-        const res = await fetch(route, {
+        const res = await fetch("/api/clarify", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({ question: questionText })
         });
         const data = await res.json();
-        const reply = document.createElement("div");
-        reply.className = "message bot";
-        reply.textContent = data.explanation;
-        box.appendChild(reply);
-
-        const nextBtn = document.createElement("button");
-        nextBtn.textContent = "Next Question";
-        nextBtn.onclick = () => {
-          index++;
-          current = questions[index];
-          loadQuestion();
-        };
-        document.getElementById("interaction").innerHTML = "";
-        document.getElementById("interaction").appendChild(nextBtn);
-
-      } catch (err) {
-        console.error("Answer check error", err);
+        questionText = data.question;
+        choices = data.choices;
+      } catch (e) {
+        console.error("clarify error", e);
       }
     }
 
-    loadQuestion();
-  </script>
+    area.innerHTML = ""; // Clear interaction
+    box.innerHTML += `<div class="message bot">${questionText}</div>`;
+
+    if ("{{ qtype }}" === "qcm") {
+      const wrapper = document.createElement("div");
+      wrapper.className = "choices";
+      choices.forEach((choiceText) => {
+        const button = document.createElement("button");
+        button.textContent = choiceText;
+        button.onclick = () => checkAnswer(choiceText[0]); // first char (A, B...)
+        wrapper.appendChild(button);
+      });
+      area.appendChild(wrapper);
+    } else {
+      const input = document.createElement("input");
+      input.id = "openInput";
+      input.type = "text";
+      input.placeholder = "Type your answer and press Enter...";
+      input.onkeydown = (e) => {
+        if (e.key === "Enter") checkAnswer(input.value);
+      };
+      area.appendChild(input);
+
+      const submit = document.createElement("button");
+      submit.textContent = "Submit";
+      submit.onclick = () => checkAnswer(input.value);
+      area.appendChild(submit);
+    }
+  }
+
+  async function checkAnswer(userInput) {
+    const box = document.getElementById("chatbox");
+    const area = document.getElementById("interaction");
+    area.innerHTML = "";
+
+    box.innerHTML += `<div class='message user'>${userInput}</div>`;
+
+    const route = "{{ qtype }}" === "qcm" ? "/api/check" : "/api/open";
+    const payload = {
+      chunk_id: current.chunk_id,
+      user_answer: userInput
+    };
+
+    try {
+      const res = await fetch(route, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      box.innerHTML += `<div class='message bot'>${data.explanation}</div>`;
+
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "Next Question";
+      nextBtn.onclick = () => {
+        index++;
+        current = questions[index];
+        loadQuestion();
+      };
+      area.appendChild(nextBtn);
+    } catch (err) {
+      console.error("checkAnswer error", err);
+    }
+  }
+
+  loadQuestion();
+</script>
+
 </body>
 </html>
