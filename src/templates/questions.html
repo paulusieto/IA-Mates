@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>{{ qtype.upper() }} - {{ source.lower() }}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
   <header>
@@ -16,13 +16,11 @@
     <ul>
       <li><a href="/menu/epac/qcm">EPAC - QCM</a></li>
       <li><a href="/menu/epac/open">EPAC - OPEN</a></li>
-      <li><a href="/menu/epac/qcm_tf">EPAC - TRUE/FALSE</a></li>
       <li><a href="/menu/pre-exam/qcm">Pre-Exam - QCM</a></li>
       <li><a href="/menu/pre-exam/open">Pre-Exam - OPEN</a></li>
-      <li><a href="/menu/pre-exam/qcm_tf">Pre-Exam - TRUE/FALSE</a></li>
+      <li><a href="/menu/pre-exam/qcm_tf">Pre-Exam - QCM_TF</a></li>
       <li><a href="/menu/paper-d/qcm">Paper D - QCM</a></li>
       <li><a href="/menu/paper-d/open">Paper D - OPEN</a></li>
-      <li><a href="/menu/paper-d/qcm_tf">Paper D - TRUE/FALSE</a></li>
     </ul>
   </div>
 
@@ -48,6 +46,7 @@
       let questionText = current.question;
       const box = document.getElementById("chatbox");
       const area = document.getElementById("interaction");
+      box.innerHTML = "";
       area.innerHTML = "";
 
       if ("{{ qtype }}" === "qcm") {
@@ -57,56 +56,19 @@
           body: JSON.stringify({ question: questionText })
         });
         const data = await res.json();
-        box.innerHTML = `<div class='message bot'>${data.question}</div>`;
-        data.choices.forEach(c => {
+        box.innerHTML = `<div class="message bot">${data.question}</div>`;
+        const wrapper = document.createElement("div");
+        wrapper.className = "choices";
+        data.choices.forEach((c) => {
           const b = document.createElement("button");
           b.textContent = c;
           b.onclick = () => checkAnswer(c.charAt(0).toUpperCase());
-          area.appendChild(b);
+          wrapper.appendChild(b);
         });
-      }
-
-      else if ("{{ qtype }}" === "qcm_tf") {
-        const res = await fetch("/api/clarify_tf", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: questionText })
-        });
-        const data = await res.json();
-        box.innerHTML = `<div class='message bot'>${data.main}</div>`;
-
-        data.sub.forEach((line, idx) => {
-          const container = document.createElement("div");
-          container.className = "tf-block";
-          container.innerHTML = `
-            <div class="message bot">${line}</div>
-            <div class="tf-options">
-              <label><input type="radio" name="tf-${idx}" value="True"> True</label>
-              <label><input type="radio" name="tf-${idx}" value="False"> False</label>
-            </div>
-          `;
-          area.appendChild(container);
-        });
-
-        const confirmBtn = document.createElement("button");
-        confirmBtn.textContent = "Submit";
-        confirmBtn.onclick = () => {
-          const userAnswers = {};
-          data.sub.forEach((line, idx) => {
-            const selected = document.querySelector(`input[name="tf-${idx}"]:checked`);
-            if (selected) {
-              userAnswers[(idx + 1).toString()] = selected.value;
-            }
-          });
-          checkTFAnswers(userAnswers);
-        };
-        area.appendChild(confirmBtn);
-      }
-
-      else if ("{{ qtype }}" === "open") {
-        box.innerHTML = `<div class='message bot'>${questionText}</div>`;
+        area.appendChild(wrapper);
+      } else if ("{{ qtype }}" === "open") {
+        box.innerHTML = `<div class="message bot">${questionText}</div>`;
         const input = document.createElement("input");
-        input.id = "openInput";
         input.type = "text";
         input.placeholder = "Type your answer and press Enter...";
         input.onkeydown = (e) => { if (e.key === "Enter") checkAnswer(input.value); };
@@ -115,6 +77,49 @@
         submit.textContent = "Submit";
         submit.onclick = () => checkAnswer(input.value);
         area.appendChild(submit);
+      } else if ("{{ qtype }}" === "qcm_tf") {
+        try {
+          const res = await fetch("/api/clarify_tf", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: questionText })
+          });
+          const data = await res.json();
+          box.innerHTML = `<div class="message bot">${data.main}</div>`;
+          const form = document.createElement("div");
+          form.className = "tf-questions";
+
+          data.sub.forEach((s, i) => {
+            const div = document.createElement("div");
+            div.className = "tf-item";
+            div.innerHTML = `
+              <label>${s}</label>
+              <select id="tf-${i}">
+                <option value="">-- Select --</option>
+                <option value="True">True</option>
+                <option value="False">False</option>
+              </select>
+            `;
+            form.appendChild(div);
+          });
+
+          const submit = document.createElement("button");
+          submit.textContent = "Submit";
+          submit.onclick = () => {
+            const user_answers = {};
+            data.sub.forEach((_, i) => {
+              user_answers[(i + 1).toString()] = document.getElementById(`tf-${i}`).value;
+            });
+            checkTFAnswer(user_answers);
+          };
+
+          area.innerHTML = "";
+          area.appendChild(form);
+          area.appendChild(submit);
+        } catch (e) {
+          box.innerHTML = "<div class='message bot'>Failed to load question.</div>";
+          console.error("clarify_tf error", e);
+        }
       }
     }
 
@@ -134,6 +139,7 @@
         body: JSON.stringify(payload)
       });
       const data = await res.json();
+
       const reply = document.createElement("div");
       reply.className = "message bot";
       reply.textContent = data.explanation;
@@ -149,8 +155,11 @@
       document.getElementById("interaction").appendChild(nextBtn);
     }
 
-    async function checkTFAnswers(userAnswers) {
-      const res = await fetch("/api/check_tf", {
+    async function checkTFAnswer(userAnswers) {
+      const box = document.getElementById("chatbox");
+      box.innerHTML += `<div class="message user">${JSON.stringify(userAnswers)}</div>`;
+
+      const res = await fetch("/api/check", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -158,19 +167,20 @@
           user_answer: userAnswers
         })
       });
+
       const data = await res.json();
-      const correct = data.answer;
+      const feedback = document.createElement("div");
+      feedback.className = "message bot";
 
-      const box = document.getElementById("chatbox");
-
-      Object.entries(correct).forEach(([num, correctVal]) => {
-        const userVal = userAnswers[num];
-        const result = userVal === correctVal ? "✅ Correct" : `❌ Incorrect (Correct: ${correctVal})`;
-        const reply = document.createElement("div");
-        reply.className = "message bot";
-        reply.innerHTML = `Statement ${num}: ${result}`;
-        box.appendChild(reply);
-      });
+      if (data.correct) {
+        feedback.textContent = "✅ All your answers are correct!";
+      } else {
+        feedback.innerHTML = "❌ Some answers were incorrect.<br>";
+        Object.entries(data.correct_answers).forEach(([k, v]) => {
+          feedback.innerHTML += `• Statement ${k}: correct answer is <b>${v}</b><br>`;
+        });
+      }
+      box.appendChild(feedback);
 
       const nextBtn = document.createElement("button");
       nextBtn.textContent = "Next Question";
