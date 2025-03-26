@@ -1,67 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>IA Mates - Chat</title>
+  <title>IA Mates</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="container">
-    <div class="sidebar">
-      <h2>IA Mates</h2>
-      <ul>
-        <li onclick="toggleMenu('EPAC')">EPAC
-          <ul class="submenu" id="submenu-EPAC">
-            <li onclick="navigate('EPAC', 'qcm')">QCM</li>
-            <li onclick="navigate('EPAC', 'open')">OPEN</li>
-          </ul>
-        </li>
-        <li onclick="toggleMenu('Pre-Exam')">Pre-Exam
-          <ul class="submenu" id="submenu-Pre-Exam">
-            <li onclick="navigate('Pre-Exam', 'qcm')">QCM</li>
-            <li onclick="navigate('Pre-Exam', 'open')">OPEN</li>
-          </ul>
-        </li>
-        <li onclick="toggleMenu('Paper D')">Paper D
-          <ul class="submenu" id="submenu-Paper D">
-            <li onclick="navigate('Paper D', 'qcm')">QCM</li>
-            <li onclick="navigate('Paper D', 'open')">OPEN</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <div class="main">
-      <div class="chat-box" id="chat-box"></div>
-      <div class="input-box">
-        <textarea id="user-input" placeholder="Ask the AI a legal question..."></textarea>
-        <button onclick="sendChat()">Send</button>
-      </div>
-    </div>
-  </div>
+
+<header>
+  <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
+  IA Mates
+</header>
+
+<div id="sidebar">
+  <button class="close-button" onclick="toggleSidebar()">✖</button>
+  <ul>
+    <li><a href="/epac/qcm">EPAC - QCM</a></li>
+    <li><a href="/epac/open">EPAC - OPEN</a></li>
+    <li><a href="/pre-exam/qcm">Pre-Exam - QCM</a></li>
+    <li><a href="/pre-exam/open">Pre-Exam - OPEN</a></li>
+    <li><a href="/paper-d/qcm">Paper D - QCM</a></li>
+    <li><a href="/paper-d/open">Paper D - OPEN</a></li>
+  </ul>
+</div>
+
+<div class="chatbox" id="chatbox">
+  <div class="message bot">Ask me any legal question below 👇</div>
+</div>
+
+<div class="choices">
+  <input id="userInput" type="text" placeholder="Ask the AI a legal question..." />
+  <button onclick="send()">Send</button>
+</div>
 
 <script>
-function toggleMenu(id) {
-  const el = document.getElementById('submenu-' + id);
-  el.classList.toggle('open');
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("active");
+  document.body.classList.toggle("sidebar-active");
 }
-function navigate(source, qtype) {
-  window.location.href = `/menu/${source}/${qtype}`;
-}
-function sendChat() {
-  const input = document.getElementById('user-input').value;
-  if (!input.trim()) return;
-  const box = document.getElementById('chat-box');
-  box.innerHTML += `<div class='bubble user'>${input}</div>`;
-  document.getElementById('user-input').value = '';
-  fetch('/api/open', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chunk_id: '', user_answer: input })
-  }).then(res => res.json()).then(data => {
-    box.innerHTML += `<div class='bubble ai'>${data.explanation}</div>`;
-    box.scrollTop = box.scrollHeight;
+
+async function send() {
+  const input = document.getElementById("userInput");
+  const message = input.value.trim();
+  if (!message) return;
+
+  const chatbox = document.getElementById("chatbox");
+
+  const userMsg = document.createElement("div");
+  userMsg.className = "message user";
+  userMsg.textContent = message;
+  chatbox.appendChild(userMsg);
+
+  input.value = "";
+
+  const response = await fetch("/api/ask", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question: message })
   });
+
+  const data = await response.json();
+
+  const botMsg = document.createElement("div");
+  botMsg.className = "message bot";
+  botMsg.textContent = data.answer;
+  chatbox.appendChild(botMsg);
+
+  chatbox.scrollTop = chatbox.scrollHeight;
 }
 </script>
+
 </body>
 </html>
