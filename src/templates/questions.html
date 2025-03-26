@@ -54,8 +54,14 @@
             body: JSON.stringify({ question: questionText })
           });
           const data = await res.json();
-          questionText = data.question;
-          choices = data.choices;
+          questionText = data.question || questionText;
+          choices = data.choices || [];
+
+          // Fallback if no choices returned
+          if (choices.length === 0) {
+            const lines = questionText.split("\n").filter(l => /^[A-D]\./.test(l.trim()));
+            choices = lines.length > 0 ? lines : ["A", "B", "C", "D"];
+          }
         } catch (e) {
           console.error("clarify error", e);
         }
@@ -68,12 +74,17 @@
       area.innerHTML = "";
 
       if ("{{ qtype }}" === "qcm") {
-        choices.forEach((c, i) => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "choices";
+        choices.forEach((c) => {
+          const letter = c.charAt(0).toUpperCase();
+          const label = c.substring(2).trim();
           const b = document.createElement("button");
-          b.textContent = c;
-          b.onclick = () => checkAnswer(c.charAt(0).toUpperCase());
-          area.appendChild(b);
+          b.textContent = `${letter}. ${label}`;
+          b.onclick = () => checkAnswer(letter);
+          wrapper.appendChild(b);
         });
+        area.appendChild(wrapper);
       } else {
         const input = document.createElement("input");
         input.id = "openInput";
@@ -118,7 +129,6 @@
           current = questions[index];
           loadQuestion();
         };
-        document.getElementById("interaction").innerHTML = "";
         document.getElementById("interaction").appendChild(nextBtn);
 
       } catch (err) {
