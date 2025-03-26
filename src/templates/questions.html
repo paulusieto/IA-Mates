@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{{ source }} - {{ qtype | upper }} Questions</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <a href="/">⬅ Back to Chat</a>
+    </div>
+    <div class="main">
+      <h2>{{ source }} - {{ qtype | upper }} Questions</h2>
+      {% for q in questions %}
+        <div class="question-block" id="q-{{ q.chunk_id }}">
+          <p><strong>{{ q.question }}</strong></p>
+          {% if qtype == 'qcm' %}
+            <div class="choices">
+              <button onclick="submitAnswer('{{ q.chunk_id }}', 'A')">A</button>
+              <button onclick="submitAnswer('{{ q.chunk_id }}', 'B')">B</button>
+              <button onclick="submitAnswer('{{ q.chunk_id }}', 'C')">C</button>
+              <button onclick="submitAnswer('{{ q.chunk_id }}', 'D')">D</button>
+            </div>
+          {% else %}
+            <textarea id="input-{{ q.chunk_id }}" placeholder="Type your answer..."></textarea>
+            <button onclick="submitOpen('{{ q.chunk_id }}')">Submit</button>
+          {% endif %}
+          <div class="explanation" id="ex-{{ q.chunk_id }}"></div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+<script>
+function submitAnswer(id, answer) {
+  fetch('/api/check', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chunk_id: id, user_answer: answer })
+  }).then(res => res.json()).then(data => {
+    document.getElementById('ex-' + id).innerText = data.explanation;
+  });
+}
+function submitOpen(id) {
+  const val = document.getElementById('input-' + id).value;
+  fetch('/api/open', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chunk_id: id, user_answer: val })
+  }).then(res => res.json()).then(data => {
+    document.getElementById('ex-' + id).innerText = data.explanation;
+  });
+}
+</script>
+</body>
+</html>
