@@ -11,17 +11,32 @@
     {{ qtype.upper() }} - {{ source.lower() }}
   </header>
 
-  <div id="sidebar">
-    <button class="close-button" onclick="toggleSidebar()">✖</button>
-    <ul>
-      <li><a href="/menu/epac/qcm">EPAC - QCM</a></li>
-      <li><a href="/menu/epac/open">EPAC - OPEN</a></li>
-      <li><a href="/menu/pre-exam/qcm">Pre-Exam - QCM</a></li>
-      <li><a href="/menu/pre-exam/open">Pre-Exam - OPEN</a></li>
-      <li><a href="/menu/paper-d/qcm">Paper D - QCM</a></li>
-      <li><a href="/menu/paper-d/open">Paper D - OPEN</a></li>
-    </ul>
-  </div>
+<div id="sidebar">
+  <button class="close-button" onclick="toggleSidebar()">✖</button>
+  <ul>
+    <li>
+      <span>EPAC</span>
+      <ul>
+        <li><a href="/menu/epac/qcm">QCM</a></li>
+        <li><a href="/menu/epac/open">OPEN</a></li>
+      </ul>
+    </li>
+    <li>
+      <span>Pre-Exam</span>
+      <ul>
+        <li><a href="/menu/pre-exam/qcm">QCM</a></li>
+        <li><a href="/menu/pre-exam/open">OPEN</a></li>
+      </ul>
+    </li>
+    <li>
+      <span>Paper D</span>
+      <ul>
+        <li><a href="/menu/paper-d/qcm">QCM</a></li>
+        <li><a href="/menu/paper-d/open">OPEN</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
 
   <div class="chatbox" id="chatbox"></div>
   <div class="choices" id="interaction"></div>
