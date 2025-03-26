@@ -6,8 +6,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <header>
-    <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
+  <header class="notranslate">
+    <button class="menu-button" onclick="toggleSidebar()">☰</button>
     {{ qtype.upper() }} - {{ source.lower() }}
   </header>
 
@@ -27,8 +27,8 @@
   </ul>
 </div>
 
-    <div class="language-selector">
-    <div class="language-icon notranslate" onclick="toggleLanguageMenu()">🌍</div>
+  <div class="language-selector">
+  <div class="language-icon notranslate" onclick="toggleLanguageMenu()">🌍</div>
     <div class="language-menu" id="languageMenu">
       <button class="translateButton notranslate" data-lang="fr">FR</button>
       <button class="translateButton notranslate" data-lang="en">EN</button>
@@ -141,14 +141,13 @@
 
     loadQuestion();
   </script>
-
-  <div id="google_translate_element" style="display:none;"></div>
+  <div id="google_translate_element" display="none"></div>
 
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
     }
-
+  
     function changeLanguage(lang) {
       let select = document.querySelector(".goog-te-combo");
       if (select) {
@@ -158,7 +157,7 @@
         alert("Google Translate is not yet ready. Wait a few seconds and then try again.");
       }
     }
-
+  
     document.querySelectorAll(".translateButton").forEach(button => {
       button.addEventListener("click", function() {
         changeLanguage(this.getAttribute("data-lang"));
@@ -166,6 +165,5 @@
     });
   </script>
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  
 </body>
 </html>
