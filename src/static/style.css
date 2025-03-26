@@ -1,107 +1,134 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
-  background-color: #f5f5f5;
-  color: #333;
+}
+.chatbox {
+  height: 60vh;
+  overflow-y: auto;
+  padding: 20px;
+  background: #f5f5f5;
+  transition: margin-left 0.3s ease; /* Animation fluide */
+}
+.message {
+  max-width: 90%;
+  margin: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+.bot { background: #e0e0e0; }
+.user { background: #2b2b2b; color: white; }
+.choices {
+  padding: 15px;
+}
+.choices button {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 16px;
+  margin: 10px 0;
+  background: #2b2b2b;
+  color: white;
+  border-radius: 6px;
+  text-align: left;
+  cursor: pointer;
+}
+#userInput {
+  width: calc(100% - 100px);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-right: 5px;
+}
+
+.language-selector {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+
+.language-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.language-menu {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.language-menu button {
+  display: block;
+  width: 100%;
+  padding: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.language-menu button:hover {
+  background: #2b2b2b;
+  color: white;
+}
+
+.show {
+  display: block;
 }
 
 header {
   background-color: #2b2b2b;
   color: white;
   padding: 20px;
-  font-size: 22px;
+  font-size: 26px;
   font-weight: bold;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.chatbox {
-  padding: 20px;
-  max-width: 800px;
-  margin: 20px auto;
-  background: white;
-  border-radius: 8px;
-  min-height: 200px;
-}
-
-.message {
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  border-radius: 6px;
-  max-width: 100%;
-  white-space: pre-wrap;
-}
-
-.message.bot {
-  background-color: #e6e6e6;
-  border-left: 5px solid #2b2b2b;
-}
-
-.message.user {
-  background-color: #d6eaff;
-  border-right: 5px solid #0077cc;
-  text-align: right;
-}
-
-.choices {
-  max-width: 800px;
-  margin: 0 auto 50px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.choices button {
-  padding: 12px;
-  font-size: 16px;
-  background-color: #2b2b2b;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.choices button:hover {
-  background-color: #444;
-}
-
-.choices input[type="text"] {
-  padding: 12px;
-  font-size: 16px;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #aaa;
-  border-radius: 5px;
+  text-align: center;
 }
 
 .menu-button {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  background: #2b2b2b;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+#sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background: #333;
+  color: white;
+  padding: 20px;
+  transition: left 0.3s ease, visibility 0.3s ease;
+  visibility: hidden; /* Cache le menu quand il est fermé */
+}
+
+#sidebar.active {
+  left: 0;
+  visibility: visible; /* Montre le menu quand il est actif */
+}
+
+#sidebar .close-button {
   background: none;
   border: none;
   color: white;
   font-size: 24px;
   cursor: pointer;
-  margin-right: 10px;
-}
-
-#sidebar {
-  position: fixed;
-  left: -300px;
-  top: 0;
-  width: 280px;
-  height: 100%;
-  background-color: #2b2b2b;
-  color: white;
-  padding: 20px;
-  overflow-y: auto;
-  transition: left 0.3s ease;
-  z-index: 20;
-}
-
-#sidebar.active {
-  left: 0;
+  display: block;
+  margin-bottom: 10px;
 }
 
 #sidebar ul {
@@ -109,30 +136,56 @@ header {
   padding: 0;
 }
 
-#sidebar li {
-  margin: 15px 0;
+#sidebar ul li {
+  padding: 10px;
 }
 
-#sidebar a {
+#sidebar ul li a {
   color: white;
   text-decoration: none;
+  display: block;
 }
 
-.close-button {
-  background: none;
-  border: none;
+#sidebar ul li a:hover {
+  background: #444;
+}
+
+.chatbox, .choices {
+  transition: margin-left 0.3s ease; /* Animation fluide */
+}
+
+.sidebar-active .chatbox,
+.sidebar-active .choices {
+  margin-left: 280px; /* Décale le chatbox et les choix quand le menu est ouvert */
+}
+#nextQuestion {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  padding: 12px 24px;
+  font-size: 18px;
+  background: #2b2b2b;
   color: white;
-  font-size: 20px;
-  float: right;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
+  z-index: 1000;
 }
 
-.sidebar-active {
+#google_translate_element {
+
+  display: none !important;
+
+  visibility: hidden;
+
+  height: 0;
+
+  width: 0;
+
   overflow: hidden;
+
 }
 
-@media screen and (max-width: 768px) {
-  .chatbox, .choices {
-    margin: 10px;
-  }
+#goog-gt-tt, .goog-te-banner-frame {
+  display: none !important;
 }
