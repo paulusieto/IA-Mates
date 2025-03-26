@@ -1,8 +1,8 @@
-""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{{ source }} - {{ qtype|upper }}</title>
+  <title>{{ qtype|upper }} - {{ source }}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -15,71 +15,111 @@
 <div id="sidebar">
   <button class="close-button" onclick="toggleSidebar()">✖</button>
   <ul>
-    <li>
-      <span>EPAC</span>
-      <ul>
-        <li><a href="/menu/epac/qcm">QCM</a></li>
-        <li><a href="/menu/epac/open">OPEN</a></li>
-      </ul>
-    </li>
-    <li>
-      <span>Pre-Exam</span>
-      <ul>
-        <li><a href="/menu/pre-exam/qcm">QCM</a></li>
-        <li><a href="/menu/pre-exam/open">OPEN</a></li>
-      </ul>
-    </li>
-    <li>
-      <span>Paper D</span>
-      <ul>
-        <li><a href="/menu/paper-d/qcm">QCM</a></li>
-        <li><a href="/menu/paper-d/open">OPEN</a></li>
-      </ul>
-    </li>
+    <li><a href="/menu/epac/qcm">EPAC - QCM</a></li>
+    <li><a href="/menu/epac/open">EPAC - OPEN</a></li>
+    <li><a href="/menu/pre-exam/qcm">Pre-Exam - QCM</a></li>
+    <li><a href="/menu/pre-exam/open">Pre-Exam - OPEN</a></li>
+    <li><a href="/menu/paper-d/qcm">Paper D - QCM</a></li>
+    <li><a href="/menu/paper-d/open">Paper D - OPEN</a></li>
   </ul>
 </div>
 
-<div class="chatbox" id="chatbox">
-  {% if questions|length > 0 %}
-    <div class="message bot" id="questionText">{{ questions[0].question }}</div>
-    <div class="choices" id="choicesBox">
-      <button onclick="selectAnswer('A')">A</button>
-      <button onclick="selectAnswer('B')">B</button>
-      <button onclick="selectAnswer('C')">C</button>
-      <button onclick="selectAnswer('D')">D</button>
-    </div>
-    <div class="message bot" id="feedback"></div>
-    <input type="hidden" id="chunkId" value="{{ questions[0].chunk_id }}">
-  {% else %}
-    <div class="message bot">No questions available for this section.</div>
-  {% endif %}
+<div class="chatbox" id="chatbox"></div>
+
+<div class="choices" id="choices"></div>
+
+<div class="choices" id="open-input" style="display:none;">
+  <input id="userInput" type="text" placeholder="Type your answer here...">
+  <button onclick="submitOpenAnswer()">Submit</button>
 </div>
 
+<div id="result" class="message"></div>
+<button onclick="nextQuestion()" id="nextBtn" style="display:none; margin: 20px auto; display: block;">Next Question</button>
+
 <script>
+let currentIndex = 0;
+const questions = {{ questions|tojson }};
+const isQCM = "{{ qtype }}" === "qcm";
+
 function toggleSidebar() {
   document.getElementById("sidebar").classList.toggle("active");
   document.body.classList.toggle("sidebar-active");
 }
 
-function selectAnswer(letter) {
-  const chunkId = document.getElementById("chunkId").value;
-  fetch("/api/check", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({chunk_id: chunkId, user_answer: letter})
-  })
-  .then(res => res.json())
-  .then(data => {
-    const feedback = document.getElementById("feedback");
-    if (data.correct === true) {
-      feedback.innerHTML = `✅ Bonne réponse. ${data.explanation}`;
-    } else if (data.correct === false) {
-      feedback.innerHTML = `❌ Mauvaise réponse. La bonne réponse était ${data.correct_letter}.<br><br>${data.explanation}`;
-    } else {
-      feedback.innerHTML = `🤖 ${data.explanation}`;
-    }
-  });
+async function showQuestion(index) {
+  const q = questions[index];
+  document.getElementById("result").innerHTML = "";
+  document.getElementById("nextBtn").style.display = "none";
+  if (!q) return;
+  const chatbox = document.getElementById("chatbox");
+  const choicesBox = document.getElementById("choices");
+  const openInput = document.getElementById("open-input");
+
+  chatbox.innerHTML = "<div class='message bot'>Loading question...</div>";
+  choicesBox.innerHTML = "";
+  openInput.style.display = isQCM ? "none" : "block";
+
+  if (isQCM) {
+    const res = await fetch("/api/clarify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: q.question })
+    });
+    const data = await res.json();
+    chatbox.innerHTML = `<div class='message bot'>${data.question}</div>`;
+    data.choices.forEach(choice => {
+      const btn = document.createElement("button");
+      btn.textContent = choice;
+      btn.onclick = () => checkAnswer(q.chunk_id, choice[0]);
+      choicesBox.appendChild(btn);
+    });
+  } else {
+    chatbox.innerHTML = `<div class='message bot'>${q.question}</div>`;
+    document.getElementById("userInput").value = "";
+  }
 }
+
+async function checkAnswer(chunk_id, userLetter) {
+  const res = await fetch("/api/check", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chunk_id: chunk_id, user_answer: userLetter })
+  });
+  const data = await res.json();
+  const result = document.getElementById("result");
+  result.classList.add("bot");
+  result.innerHTML = data.correct === true ? `✅ Correct!<br>${data.explanation}` : `❌ Incorrect. Correct: ${data.correct_letter}<br>${data.explanation}`;
+  document.getElementById("nextBtn").style.display = "block";
+}
+
+async function submitOpenAnswer() {
+  const userAnswer = document.getElementById("userInput").value;
+  const chunk_id = questions[currentIndex].chunk_id;
+  const res = await fetch("/api/open", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chunk_id, user_answer: userAnswer })
+  });
+  const data = await res.json();
+  const result = document.getElementById("result");
+  result.classList.add("bot");
+  result.innerHTML = data.explanation;
+  document.getElementById("nextBtn").style.display = "block";
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex >= questions.length) {
+    document.getElementById("chatbox").innerHTML = "<div class='message bot'>✅ All questions done!</div>";
+    document.getElementById("choices").innerHTML = "";
+    document.getElementById("open-input").style.display = "none";
+    document.getElementById("nextBtn").style.display = "none";
+  } else {
+    showQuestion(currentIndex);
+  }
+}
+
+window.onload = () => showQuestion(currentIndex);
 </script>
 
 </body>
