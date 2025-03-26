@@ -88,37 +88,42 @@
           wrapper.appendChild(b);
         });
         area.appendChild(wrapper);
-      }else if ("{{ qtype }}" === "qcm_tf") {
-  const wrapper = document.createElement("div");
-  wrapper.className = "choices";
+      }} else if ("{{ qtype }}" === "qcm_tf") {
+  const statements = questionText.split(/\n(?=\d+\.\d+)/).filter(Boolean);
+  const form = document.createElement("form");
+  form.className = "choices";
 
-  // Expecting question text as list of phrases (split by \n or numbered)
-  const phrases = questionText.split(/\n/).filter(p => p.trim());
-  const selections = [];
+  const answers = {};
 
-  phrases.forEach((phrase, idx) => {
-    const row = document.createElement("div");
-    row.innerHTML = `<strong>${phrase}</strong><br>
-      <label><input type="radio" name="tf_${idx}" value="true"> True</label>
-      <label><input type="radio" name="tf_${idx}" value="false"> False</label>`;
-    wrapper.appendChild(row);
-    selections.push({ idx, phrase });
+  statements.forEach((s, idx) => {
+    const key = (idx + 1).toString();
+    const div = document.createElement("div");
+    div.className = "tf-row";
+    div.innerHTML = `
+      <p><strong>${s}</strong></p>
+      <label><input type="radio" name="tf_${key}" value="True"> True</label>
+      <label><input type="radio" name="tf_${key}" value="False"> False</label>
+    `;
+    form.appendChild(div);
   });
 
-  const confirm = document.createElement("button");
-  confirm.textContent = "Confirm";
-  confirm.onclick = () => {
-    const userAnswers = selections.map(s => {
-      const selected = document.querySelector(`input[name="tf_${s.idx}"]:checked`);
-      return selected ? selected.value : null;
+  const submit = document.createElement("button");
+  submit.textContent = "Confirm";
+  submit.onclick = (e) => {
+    e.preventDefault();
+    const user_answers = {};
+    statements.forEach((s, idx) => {
+      const key = (idx + 1).toString();
+      const selected = document.querySelector(`input[name="tf_${key}"]:checked`);
+      user_answers[key] = selected ? selected.value : "No answer";
     });
-
-    checkTrueFalseAnswers(current.chunk_id, userAnswers, phrases);
+    checkTFAnswers(current.chunk_id, user_answers, statements);
   };
 
-  wrapper.appendChild(confirm);
-  area.appendChild(wrapper);
-} 
+  form.appendChild(submit);
+  area.appendChild(form);
+}
+
       else {
         const input = document.createElement("input");
         input.id = "openInput";
@@ -169,42 +174,39 @@
         console.error("Answer check error", err);
       }
     }
-    async function checkTrueFalseAnswers(chunkId, userAnswers, phrases) {
+    async function checkTFAnswers(chunk_id, user_answers, statements) {
   const res = await fetch("/api/check_tf", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chunk_id: chunkId,
-      user_answers: userAnswers
-    })
+    body: JSON.stringify({ chunk_id, user_answers })
   });
 
   const data = await res.json();
   const box = document.getElementById("chatbox");
   box.innerHTML = "";
 
-  phrases.forEach((phrase, idx) => {
-    const correct = data.correct_answers[idx];
-    const user = data.user_answers[idx];
-    const icon = correct === user ? "✅" : "❌";
+  statements.forEach((statement, idx) => {
+    const key = (idx + 1).toString();
+    const result = data.results[key];
+    const icon = result.correct ? "✅" : "❌";
     box.innerHTML += `
-      <div class='message bot'>
-        <strong>${phrase}</strong><br>
-        Your answer: <strong>${user}</strong><br>
-        Correct answer: <strong>${correct}</strong> ${icon}
+      <div class="message bot">
+        <p><strong>${statement}</strong></p>
+        <p>Your answer: ${result.user}</p>
+        <p>Correct answer: ${result.expected} ${icon}</p>
       </div>
     `;
   });
 
-  const nextBtn = document.createElement("button");
-  nextBtn.textContent = "Next Question";
-  nextBtn.onclick = () => {
+  const next = document.createElement("button");
+  next.textContent = "Next Question";
+  next.onclick = () => {
     index++;
     current = questions[index];
     loadQuestion();
   };
   document.getElementById("interaction").innerHTML = "";
-  document.getElementById("interaction").appendChild(nextBtn);
+  document.getElementById("interaction").appendChild(next);
 }
 
 
