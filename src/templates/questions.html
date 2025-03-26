@@ -68,15 +68,12 @@
       area.innerHTML = "";
 
       if ("{{ qtype }}" === "qcm") {
-        const wrapper = document.createElement("div");
-        wrapper.className = "choices";
         choices.forEach((c, i) => {
           const b = document.createElement("button");
           b.textContent = c;
           b.onclick = () => checkAnswer(c.charAt(0).toUpperCase());
-          wrapper.appendChild(b);
+          area.appendChild(b);
         });
-        area.appendChild(wrapper);
       } else {
         const input = document.createElement("input");
         input.id = "openInput";
@@ -121,6 +118,7 @@
           current = questions[index];
           loadQuestion();
         };
+        document.getElementById("interaction").innerHTML = "";
         document.getElementById("interaction").appendChild(nextBtn);
 
       } catch (err) {
