@@ -88,7 +88,38 @@
           wrapper.appendChild(b);
         });
         area.appendChild(wrapper);
-      } else {
+      }else if ("{{ qtype }}" === "qcm_tf") {
+  const wrapper = document.createElement("div");
+  wrapper.className = "choices";
+
+  // Expecting question text as list of phrases (split by \n or numbered)
+  const phrases = questionText.split(/\n/).filter(p => p.trim());
+  const selections = [];
+
+  phrases.forEach((phrase, idx) => {
+    const row = document.createElement("div");
+    row.innerHTML = `<strong>${phrase}</strong><br>
+      <label><input type="radio" name="tf_${idx}" value="true"> True</label>
+      <label><input type="radio" name="tf_${idx}" value="false"> False</label>`;
+    wrapper.appendChild(row);
+    selections.push({ idx, phrase });
+  });
+
+  const confirm = document.createElement("button");
+  confirm.textContent = "Confirm";
+  confirm.onclick = () => {
+    const userAnswers = selections.map(s => {
+      const selected = document.querySelector(`input[name="tf_${s.idx}"]:checked`);
+      return selected ? selected.value : null;
+    });
+
+    checkTrueFalseAnswers(current.chunk_id, userAnswers, phrases);
+  };
+
+  wrapper.appendChild(confirm);
+  area.appendChild(wrapper);
+} 
+      else {
         const input = document.createElement("input");
         input.id = "openInput";
         input.type = "text";
