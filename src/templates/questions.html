@@ -6,34 +6,22 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <header class="notranslate">
-    <button class="menu-button" onclick="toggleSidebar()">☰</button>
+  <header>
+    <button class="menu-button" onclick="toggleSidebar()">☰ Menu</button>
     {{ qtype.upper() }} - {{ source.lower() }}
   </header>
 
-<div id="sidebar">
-  <button class="close-button" onclick="toggleSidebar()">✖</button>
-  <ul>
-    <li>
-      <span>EPAC</span>
-      <ul>
-        <li><a href="/menu/epac/qcm">QCM</a></li>
-        <li><a href="/menu/epac/open">OPEN</a></li>
-      </ul>
-    </li>
-    <li>
-      <ul><a href="/">Chat</a></ul>
-    </li>
-  </ul>
-</div>
-
-  <div class="language-selector">
-  <div class="language-icon notranslate" onclick="toggleLanguageMenu()">🌍</div>
-    <div class="language-menu" id="languageMenu">
-      <button class="translateButton notranslate" data-lang="fr">FR</button>
-      <button class="translateButton notranslate" data-lang="en">EN</button>
-      <button class="translateButton notranslate" data-lang="de">DE</button>
-    </div>
+  <div id="sidebar">
+    <button class="close-button" onclick="toggleSidebar()">✖</button>
+    <ul>
+      <li><a href="/menu/epac/qcm">EPAC - QCM</a></li>
+      <li><a href="/menu/epac/open">EPAC - OPEN</a></li>
+      <li><a href="/menu/pre-exam/qcm">Pre-Exam - QCM</a></li>
+      <li><a href="/menu/pre-exam/open">Pre-Exam - OPEN</a></li>
+      <li><a href="/menu/pre-exam/qcm_tf">Pre-Exam - TRUE/FALSE</a></li>
+      <li><a href="/menu/paper-d/qcm">Paper D - QCM</a></li>
+      <li><a href="/menu/paper-d/open">Paper D - OPEN</a></li>
+    </ul>
   </div>
 
   <div class="chatbox" id="chatbox"></div>
@@ -50,14 +38,16 @@
     }
 
     async function loadQuestion() {
+      const box = document.getElementById("chatbox");
+      const area = document.getElementById("interaction");
+      box.innerHTML = "";
+      area.innerHTML = "<div class='message bot'>Loading question...</div>";
+
       if (!current) return;
-      document.getElementById("chatbox").innerHTML = "";
-      document.getElementById("interaction").innerHTML = "";
 
       let questionText = current.question;
       let choices = [];
 
-      // Clarify for QCM
       if ("{{ qtype }}" === "qcm") {
         try {
           const res = await fetch("/api/clarify", {
@@ -73,10 +63,8 @@
         }
       }
 
-      const box = document.getElementById("chatbox");
       box.innerHTML = `<div class='message bot'>${questionText}</div>`;
-
-      const area = document.getElementById("interaction");
+      area.innerHTML = "";
 
       if ("{{ qtype }}" === "qcm") {
         const wrapper = document.createElement("div");
@@ -88,43 +76,8 @@
           wrapper.appendChild(b);
         });
         area.appendChild(wrapper);
-      }} else if ("{{ qtype }}" === "qcm_tf") {
-  const statements = questionText.split(/\n(?=\d+\.\d+)/).filter(Boolean);
-  const form = document.createElement("form");
-  form.className = "choices";
 
-  const answers = {};
-
-  statements.forEach((s, idx) => {
-    const key = (idx + 1).toString();
-    const div = document.createElement("div");
-    div.className = "tf-row";
-    div.innerHTML = `
-      <p><strong>${s}</strong></p>
-      <label><input type="radio" name="tf_${key}" value="True"> True</label>
-      <label><input type="radio" name="tf_${key}" value="False"> False</label>
-    `;
-    form.appendChild(div);
-  });
-
-  const submit = document.createElement("button");
-  submit.textContent = "Confirm";
-  submit.onclick = (e) => {
-    e.preventDefault();
-    const user_answers = {};
-    statements.forEach((s, idx) => {
-      const key = (idx + 1).toString();
-      const selected = document.querySelector(`input[name="tf_${key}"]:checked`);
-      user_answers[key] = selected ? selected.value : "No answer";
-    });
-    checkTFAnswers(current.chunk_id, user_answers, statements);
-  };
-
-  form.appendChild(submit);
-  area.appendChild(form);
-}
-
-      else {
+      } else if ("{{ qtype }}" === "open") {
         const input = document.createElement("input");
         input.id = "openInput";
         input.type = "text";
@@ -136,6 +89,41 @@
         submit.textContent = "Submit";
         submit.onclick = () => checkAnswer(input.value);
         area.appendChild(submit);
+
+      } else if ("{{ qtype }}" === "qcm_tf") {
+        const statements = questionText.split(/\n(?=\d+\.\d+)/).filter(Boolean);
+        const form = document.createElement("form");
+        form.className = "choices";
+
+        const answers = {};
+
+        statements.forEach((s, idx) => {
+          const key = (idx + 1).toString();
+          const div = document.createElement("div");
+          div.className = "tf-row";
+          div.innerHTML = `
+            <p><strong>${s}</strong></p>
+            <label><input type="radio" name="tf_${key}" value="True"> True</label>
+            <label><input type="radio" name="tf_${key}" value="False"> False</label>
+          `;
+          form.appendChild(div);
+        });
+
+        const confirm = document.createElement("button");
+        confirm.textContent = "Confirm";
+        confirm.onclick = (e) => {
+          e.preventDefault();
+          const user_answers = {};
+          statements.forEach((s, idx) => {
+            const key = (idx + 1).toString();
+            const selected = document.querySelector(`input[name="tf_${key}"]:checked`);
+            user_answers[key] = selected ? selected.value : "No answer";
+          });
+          checkTFAnswers(current.chunk_id, user_answers, statements);
+        };
+
+        form.appendChild(confirm);
+        area.appendChild(form);
       }
     }
 
@@ -144,6 +132,7 @@
       box.innerHTML += `<div class='message user'>${userInput}</div>`;
 
       const route = "{{ qtype }}" === "qcm" ? "/api/check" : "/api/open";
+
       const payload = {
         chunk_id: current.chunk_id,
         user_answer: userInput
@@ -155,6 +144,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
+
         const data = await res.json();
         const reply = document.createElement("div");
         reply.className = "message bot";
@@ -174,65 +164,43 @@
         console.error("Answer check error", err);
       }
     }
+
     async function checkTFAnswers(chunk_id, user_answers, statements) {
-  const res = await fetch("/api/check_tf", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ chunk_id, user_answers })
-  });
+      const res = await fetch("/api/check_tf", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chunk_id, user_answers })
+      });
 
-  const data = await res.json();
-  const box = document.getElementById("chatbox");
-  box.innerHTML = "";
+      const data = await res.json();
+      const box = document.getElementById("chatbox");
+      box.innerHTML = "";
 
-  statements.forEach((statement, idx) => {
-    const key = (idx + 1).toString();
-    const result = data.results[key];
-    const icon = result.correct ? "✅" : "❌";
-    box.innerHTML += `
-      <div class="message bot">
-        <p><strong>${statement}</strong></p>
-        <p>Your answer: ${result.user}</p>
-        <p>Correct answer: ${result.expected} ${icon}</p>
-      </div>
-    `;
-  });
+      statements.forEach((statement, idx) => {
+        const key = (idx + 1).toString();
+        const result = data.results[key];
+        const icon = result.correct ? "✅" : "❌";
+        box.innerHTML += `
+          <div class="message bot">
+            <p><strong>${statement}</strong></p>
+            <p>Your answer: ${result.user}</p>
+            <p>Correct answer: ${result.expected} ${icon}</p>
+          </div>
+        `;
+      });
 
-  const next = document.createElement("button");
-  next.textContent = "Next Question";
-  next.onclick = () => {
-    index++;
-    current = questions[index];
-    loadQuestion();
-  };
-  document.getElementById("interaction").innerHTML = "";
-  document.getElementById("interaction").appendChild(next);
-}
-
+      const nextBtn = document.createElement("button");
+      nextBtn.textContent = "Next Question";
+      nextBtn.onclick = () => {
+        index++;
+        current = questions[index];
+        loadQuestion();
+      };
+      document.getElementById("interaction").innerHTML = "";
+      document.getElementById("interaction").appendChild(nextBtn);
+    }
 
     loadQuestion();
   </script>
-  <div id="google_translate_element" style="display:none;"></div>
-<button onclick="translatePage()" style="margin: 20px;">🌍 Translate</button>
-
-<script>
-function translatePage() {
-  const existing = document.getElementById('google_translate_element');
-  if (!window.google || !window.google.translate) {
-    const gt = document.createElement('script');
-    gt.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-    document.body.appendChild(gt);
-  } else {
-    googleTranslateElementInit();
-  }
-}
-
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-}
-</script>
 </body>
 </html>
