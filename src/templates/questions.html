@@ -141,29 +141,27 @@
 
     loadQuestion();
   </script>
-  <div id="google_translate_element" display="none"></div>
+  <div id="google_translate_element" style="display:none;"></div>
+<button onclick="translatePage()" style="margin: 20px;">🌍 Translate</button>
 
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-    }
-  
-    function changeLanguage(lang) {
-      let select = document.querySelector(".goog-te-combo");
-      if (select) {
-        select.value = lang;
-        select.dispatchEvent(new Event("change"));
-      } else {
-        alert("Google Translate is not yet ready. Wait a few seconds and then try again.");
-      }
-    }
-  
-    document.querySelectorAll(".translateButton").forEach(button => {
-      button.addEventListener("click", function() {
-        changeLanguage(this.getAttribute("data-lang"));
-      });
-    });
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script>
+function translatePage() {
+  const existing = document.getElementById('google_translate_element');
+  if (!window.google || !window.google.translate) {
+    const gt = document.createElement('script');
+    gt.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    document.body.appendChild(gt);
+  } else {
+    googleTranslateElementInit();
+  }
+}
+
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+  }, 'google_translate_element');
+}
+</script>
 </body>
 </html>
