@@ -1,181 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>QCM Chatbot</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>IA Mates - Chat</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <header>
-    <button class="menu-button" onclick="toggleMenu()">☰ Menu</button>
-    <h1 class="notranslate">IA Mates</h1>
-  </header>
-
-  <nav id="sidebar">
-    <button class="close-button" onclick="toggleMenu()">×</button>
-    <ul>
-      <li><a class="notranslate" href="#">EPAC</a></li>
-      <li><a class="notranslate" href="#">Pré-Exam</a></li>
-      <li><a class="notranslate" href="#">Paper D</a></li>
-    </ul>
-  </nav>
-  
-  <div class="language-selector">
-    <div class="language-icon notranslate" onclick="toggleLanguageMenu()">🌍</div>
-    <div class="language-menu" id="languageMenu">
-      <button class="translateButton notranslate" data-lang="fr">FR</button>
-      <button class="translateButton notranslate" data-lang="en">EN</button>
-      <button class="translateButton notranslate" data-lang="de">DE</button>
+  <div class="container">
+    <div class="sidebar">
+      <h2>IA Mates</h2>
+      <ul>
+        <li onclick="toggleMenu('EPAC')">EPAC
+          <ul class="submenu" id="submenu-EPAC">
+            <li onclick="navigate('EPAC', 'qcm')">QCM</li>
+            <li onclick="navigate('EPAC', 'open')">OPEN</li>
+          </ul>
+        </li>
+        <li onclick="toggleMenu('Pre-Exam')">Pre-Exam
+          <ul class="submenu" id="submenu-Pre-Exam">
+            <li onclick="navigate('Pre-Exam', 'qcm')">QCM</li>
+            <li onclick="navigate('Pre-Exam', 'open')">OPEN</li>
+          </ul>
+        </li>
+        <li onclick="toggleMenu('Paper D')">Paper D
+          <ul class="submenu" id="submenu-Paper D">
+            <li onclick="navigate('Paper D', 'qcm')">QCM</li>
+            <li onclick="navigate('Paper D', 'open')">OPEN</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="main">
+      <div class="chat-box" id="chat-box"></div>
+      <div class="input-box">
+        <textarea id="user-input" placeholder="Ask the AI a legal question..."></textarea>
+        <button onclick="sendChat()">Send</button>
+      </div>
     </div>
   </div>
-  
-  <div class="chatbox" id="chat"></div>
-  <div class="choices" id="choices"></div>
-  <button id="nextQuestion" onclick="displayQuestion()" style="display:none;">Question suivante</button>
 
-  <script id="questionsData" type="application/json">
-    {{ questions | tojson | safe }}
-  </script>
-
-  <script>
-    function toggleMenu() {
-      document.getElementById("sidebar").classList.toggle("active");
-      document.body.classList.toggle("sidebar-active");
-    }
-
-    function toggleLanguageMenu() {
-      document.getElementById("languageMenu").classList.toggle("show");
-    }
-
-    function changeLanguage(lang) {
-      alert("Langue changée en : " + lang);
-    }
-
-    window.onclick = function(event) {
-      if (!event.target.matches('.language-icon')) {
-        var dropdowns = document.getElementsByClassName("language-menu");
-        for (var i = 0; i < dropdowns.length; i++) {
-          var openDropdown = dropdowns[i];
-          if (openDropdown.classList.contains('show')) {
-            openDropdown.classList.remove('show');
-          }
-        }
-      }
-    }
-
-    const questions = JSON.parse(document.getElementById("questionsData").textContent);
-    const chat = document.getElementById("chat");
-    const choicesDiv = document.getElementById("choices");
-    const nextButton = document.getElementById("nextQuestion");
-    let current = null;
-    let answered = false;
-
-   function appendMessage(text, sender) {
-  const div = document.createElement("div");
-  div.className = "message " + sender;
-  if (sender === "user") {  // Assure-toi que c'est un message de l'utilisateur
-    div.classList.add("notranslate"); // Ajoute la classe notranslate
-  }
-  div.textContent = text;
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+<script>
+function toggleMenu(id) {
+  const el = document.getElementById('submenu-' + id);
+  el.classList.toggle('open');
 }
-
-
-    function displayQuestion() {
-      current = questions[Math.floor(Math.random() * questions.length)];
-      fetch("/api/clarify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: current.question })
-      })
-      .then(res => res.json())
-      .then(parsed => {
-        appendMessage(parsed.question, "bot");
-        showChoices(parsed.choices);
-        answered = false;
-        nextButton.style.display = "none";
-      })
-      .catch(() => {
-        appendMessage("❌ Error loading question", "bot");
-      });
-    }
-
-    function showChoices(choices) {
-      choicesDiv.innerHTML = "";
-      choices.forEach(choice => {
-        const letter = choice[0];
-        const btn = document.createElement("button");
-        btn.textContent = choice;
-        btn.onclick = () => submitAnswer(letter);
-        choicesDiv.appendChild(btn);
-      });
-    }
-
-    function submitAnswer(letter) {
-      if (answered) return;
-      answered = true;
-
-      appendMessage(letter, "user");
-
-      fetch("/api/check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chunk_id: current.chunk_id, user_answer: letter })
-      })
-      .then(res => res.json())
-      .then(data => {
-        let msg = "";
-        if (data.correct === true) {
-        msg = `✅ Good answer !\n\n${data.explanation}`;
-        } else if (data.correct === false) {
-        msg = `❌ Wrong answer. The good answer was ${data.correct_letter}.\n\n${data.explanation}`;
-        } else {
-        msg = `Response assessed by AI  : ${data.explanation}`;
-        }
-        appendMessage(msg, "bot");
-        nextButton.style.display = "block";
-        disableChoices();
-      })
-      .catch(() => {
-        appendMessage("❌ Answer verification error", "bot");
-        nextButton.style.display = "block";
-      });
-    }
-
-    function disableChoices() {
-      const buttons = choicesDiv.getElementsByTagName("button");
-      for (let btn of buttons) {
-        btn.disabled = true;
-      }
-    }
-
-    window.onload = displayQuestion;
-  </script>
-  <!-- Script Google Translate -->
-  <div id="google_translate_element" display="none"></div>
-
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-    }
-  
-    function changeLanguage(lang) {
-      let select = document.querySelector(".goog-te-combo");
-      if (select) {
-        select.value = lang;
-        select.dispatchEvent(new Event("change"));
-      } else {
-        alert("Google Translate is not yet ready. Wait a few seconds and then try again.");
-      }
-    }
-  
-    document.querySelectorAll(".translateButton").forEach(button => {
-      button.addEventListener("click", function() {
-        changeLanguage(this.getAttribute("data-lang"));
-      });
-    });
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+function navigate(source, qtype) {
+  window.location.href = `/menu/${source}/${qtype}`;
+}
+function sendChat() {
+  const input = document.getElementById('user-input').value;
+  if (!input.trim()) return;
+  const box = document.getElementById('chat-box');
+  box.innerHTML += `<div class='bubble user'>${input}</div>`;
+  document.getElementById('user-input').value = '';
+  fetch('/api/open', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chunk_id: '', user_answer: input })
+  }).then(res => res.json()).then(data => {
+    box.innerHTML += `<div class='bubble ai'>${data.explanation}</div>`;
+    box.scrollTop = box.scrollHeight;
+  });
+}
+</script>
 </body>
 </html>
