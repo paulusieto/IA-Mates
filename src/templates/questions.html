@@ -78,49 +78,53 @@
         submit.onclick = () => checkAnswer(input.value);
         area.appendChild(submit);
       } else if ("{{ qtype }}" === "qcm_tf") {
-        try {
-          const res = await fetch("/api/clarify_tf", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question: questionText })
-          });
-          const data = await res.json();
-          box.innerHTML = `<div class="message bot">${data.main}</div>`;
-          const form = document.createElement("div");
-          form.className = "tf-questions";
+  try {
+    const res = await fetch("/api/clarify_tf", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: questionText })
+    });
+    const data = await res.json();
+    box.innerHTML = `<div class='message bot'>${data.main}</div>`;
 
-          data.sub.forEach((s, i) => {
-            const div = document.createElement("div");
-            div.className = "tf-item";
-            div.innerHTML = `
-              <label>${s}</label>
-              <select id="tf-${i}">
-                <option value="">-- Select --</option>
-                <option value="True">True</option>
-                <option value="False">False</option>
-              </select>
-            `;
-            form.appendChild(div);
-          });
+    data.sub.forEach((line, idx) => {
+      const group = document.createElement("div");
+      group.className = "message bot";
+      group.innerHTML = `
+        <div><strong>${idx + 1}.</strong> ${line}</div>
+        <div class="choices" style="display: flex; gap: 10px; margin-top: 6px;">
+          <button onclick="selectTF(${idx}, 'True')">✅ True</button>
+          <button onclick="selectTF(${idx}, 'False')">❌ False</button>
+        </div>
+        <div id="selected-${idx}" style="margin-left: 5px; margin-top: 4px;"></div>
+      `;
+      area.appendChild(group);
+    });
 
-          const submit = document.createElement("button");
-          submit.textContent = "Submit";
-          submit.onclick = () => {
-            const user_answers = {};
-            data.sub.forEach((_, i) => {
-              user_answers[(i + 1).toString()] = document.getElementById(`tf-${i}`).value;
-            });
-            checkTFAnswer(user_answers);
-          };
-
-          area.innerHTML = "";
-          area.appendChild(form);
-          area.appendChild(submit);
-        } catch (e) {
-          box.innerHTML = "<div class='message bot'>Failed to load question.</div>";
-          console.error("clarify_tf error", e);
+    const submit = document.createElement("button");
+    submit.textContent = "Submit";
+    submit.onclick = () => {
+      const userAnswers = {};
+      data.sub.forEach((_, idx) => {
+        const chosen = document.getElementById("selected-" + idx).dataset.value;
+        if (chosen) {
+          userAnswers[(idx + 1).toString()] = chosen;
         }
-      }
+      });
+      checkTFAnswers(userAnswers);
+    };
+    area.appendChild(submit);
+
+    window.selectTF = function(idx, val) {
+      const span = document.getElementById("selected-" + idx);
+      span.innerText = `→ ${val}`;
+      span.dataset.value = val;
+    };
+  } catch (e) {
+    box.innerHTML = "<div class='message bot'>⚠️ Error loading TF question.</div>";
+  }
+}
+
     }
 
     async function checkAnswer(userInput) {
