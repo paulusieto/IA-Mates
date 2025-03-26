@@ -159,9 +159,11 @@
         })
       });
       const data = await res.json();
+      const correct = data.answer;
+
       const box = document.getElementById("chatbox");
 
-      Object.entries(data.correct_answers).forEach(([num, correctVal]) => {
+      Object.entries(correct).forEach(([num, correctVal]) => {
         const userVal = userAnswers[num];
         const result = userVal === correctVal ? "✅ Correct" : `❌ Incorrect (Correct: ${correctVal})`;
         const reply = document.createElement("div");
@@ -169,11 +171,6 @@
         reply.innerHTML = `Statement ${num}: ${result}`;
         box.appendChild(reply);
       });
-
-      const expl = document.createElement("div");
-      expl.className = "message bot";
-      expl.textContent = data.explanation || "Answer feedback complete.";
-      box.appendChild(expl);
 
       const nextBtn = document.createElement("button");
       nextBtn.textContent = "Next Question";
