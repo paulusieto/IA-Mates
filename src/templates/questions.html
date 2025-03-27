@@ -11,6 +11,15 @@
     .message.bot {
       margin-bottom: 6px;
     }
+    .chatbox {
+      padding: 10px;
+    }
+    .choices {
+      padding: 0 10px 20px 10px;
+    }
+    .choices > .message.bot {
+      margin-top: 0;
+    }
   </style>
 </head>
 <body>
@@ -82,6 +91,7 @@
 
           const context = document.createElement("div");
           context.className = "message bot";
+          context.style.marginBottom = "0";
           context.innerHTML = `<p>${data.main}</p>`;
           box.appendChild(context);
 
