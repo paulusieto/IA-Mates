@@ -5,48 +5,36 @@
   <title>{{ qtype.upper() }} - {{ source.lower() }}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
-    .message.bot p:first-child {
-      margin-bottom: 6px;
-    }
-    .message.bot {
-      margin-bottom: 6px;
-    }
-    .chatbox {
-      padding: 10px;
-    }
-    .choices {
-      padding: 0 10px 20px 10px;
-    }
-    .choices > .message.bot {
-      margin-top: 0;
-    }
-
     .language-selector {
       position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 1000;
+      top: 8px;
+      right: 8px;
+      z-index: 9999;
     }
-
     .language-icon {
+      font-size: 22px;
       cursor: pointer;
-      font-size: 20px;
     }
-
     .language-menu {
       display: none;
       position: absolute;
       right: 0;
-      background-color: white;
+      top: 28px;
+      background: white;
       border: 1px solid #ccc;
       padding: 4px;
     }
-
     .language-menu.show {
       display: block;
     }
   </style>
-  <script type="text/javascript">
+  <script>
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
@@ -54,36 +42,23 @@
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element');
     }
-
     function toggleLanguageMenu() {
-      document.getElementById("languageMenu").classList.toggle("show");
+      const menu = document.getElementById("languageMenu");
+      menu.classList.toggle("show");
     }
-
     function changeLanguage(lang) {
-      const select = document.querySelector(".goog-te-combo");
-      if (select) {
-        select.value = lang;
-        select.dispatchEvent(new Event("change"));
-      } else {
-        alert("Google Translate is not yet ready. Please wait and try again.");
-      }
-    }
-
-    function waitForTranslateDropdown(callback, retries = 20) {
-      const select = document.querySelector(".goog-te-combo");
-      if (select) return callback();
-      if (retries > 0) {
-        setTimeout(() => waitForTranslateDropdown(callback, retries - 1), 300);
+      const combo = document.querySelector(".goog-te-combo");
+      if (combo) {
+        combo.value = lang;
+        combo.dispatchEvent(new Event("change"));
       } else {
         alert("Google Translate is not ready. Please wait a moment and try again.");
       }
     }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".translateButton").forEach(button => {
-        button.addEventListener("click", function () {
-          const lang = this.getAttribute("data-lang");
-          waitForTranslateDropdown(() => changeLanguage(lang));
+    window.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".translateButton").forEach(btn => {
+        btn.addEventListener("click", () => {
+          changeLanguage(btn.dataset.lang);
         });
       });
     });
@@ -91,6 +66,16 @@
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
 <body>
+  <div class="language-selector">
+    <div class="language-icon notranslate" onclick="toggleLanguageMenu()">🌍</div>
+    <div id="languageMenu" class="language-menu notranslate">
+      <button class="translateButton notranslate" data-lang="en">EN</button>
+      <button class="translateButton notranslate" data-lang="fr">FR</button>
+      <button class="translateButton notranslate" data-lang="de">DE</button>
+    </div>
+    <div id="google_translate_element" class="notranslate" style="position:fixed; top:-1000px;"></div>
+  </div>
+
   <header>
     <button class="menu-button" onclick="toggleSidebar()">☰</button>
     {{ qtype.upper() }} - {{ source.lower() }}
@@ -99,41 +84,21 @@
   <div id="sidebar">
     <button class="close-button" onclick="toggleSidebar()">✖</button>
     <ul>
-      <li>
-        <span>EPAC</span>
-        <ul>
-          <li><a href="/menu/epac/qcm">QCM</a></li>
-          <li><a href="/menu/epac/open">OPEN</a></li>
-        </ul>
-      </li>
-      <li>
-        <span>Pre-Exam</span>
-        <ul>
-          <li><a href="/menu/pre-exam/qcm_tf">VRAI/FAUX</a></li>
-        </ul>
-        <ul><li><a href="/">Chat</a></li></ul>
-      </li>
+      <li><a href="/menu/epac/qcm">EPAC - QCM</a></li>
+      <li><a href="/menu/epac/open">EPAC - OPEN</a></li>
+      <li><a href="/menu/epac/qcm_tf">EPAC - TRUE/FALSE</a></li>
+      <li><a href="/menu/pre-exam/qcm">Pre-Exam - QCM</a></li>
+      <li><a href="/menu/pre-exam/open">Pre-Exam - OPEN</a></li>
+      <li><a href="/menu/pre-exam/qcm_tf">Pre-Exam - TRUE/FALSE</a></li>
     </ul>
-  </div>
-
-  <div class="language-selector">
-    <div class="language-icon notranslate" onclick="toggleLanguageMenu()">🌍</div>
-    <div class="language-menu" id="languageMenu">
-      <button class="translateButton notranslate" data-lang="fr">FR</button>
-      <button class="translateButton notranslate" data-lang="en">EN</button>
-      <button class="translateButton notranslate" data-lang="de">DE</button>
-    </div>
   </div>
 
   <div class="chatbox" id="chatbox"></div>
   <div class="choices" id="interaction"></div>
 
-  <div id="google_translate_element" class="notranslate" style="position: fixed; top: 50px; right: 10px; z-index: 1000;"></div>
-
-
   <script>
     let questions = {{ questions | tojson }};
-    shuffle(questions);
+shuffle(questions);
     let index = 0;
     let current = questions[index];
 
