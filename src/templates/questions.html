@@ -70,11 +70,23 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".translateButton").forEach(button => {
-        button.addEventListener("click", function () {
-          changeLanguage(this.getAttribute("data-lang"));
-        });
-      });
+      function waitForTranslateDropdown(callback, retries = 10) {
+  const select = document.querySelector(".goog-te-combo");
+  if (select) return callback();
+  if (retries > 0) {
+    setTimeout(() => waitForTranslateDropdown(callback, retries - 1), 500);
+  } else {
+    alert("Google Translate is not ready. Please wait a moment and try again.");
+  }
+}
+
+document.querySelectorAll(".translateButton").forEach(button => {
+  button.addEventListener("click", function () {
+    const lang = this.getAttribute("data-lang");
+    waitForTranslateDropdown(() => changeLanguage(lang));
+  });
+});
+
     });
   </script>
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
