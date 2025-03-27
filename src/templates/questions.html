@@ -20,9 +20,30 @@
     .choices > .message.bot {
       margin-top: 0;
     }
-    #google_translate_element {
-      float: right;
-      margin: 10px;
+
+    .language-selector {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+    }
+
+    .language-icon {
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .language-menu {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 4px;
+    }
+
+    .language-menu.show {
+      display: block;
     }
   </style>
   <script type="text/javascript">
@@ -33,6 +54,28 @@
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element');
     }
+
+    function toggleLanguageMenu() {
+      document.getElementById("languageMenu").classList.toggle("show");
+    }
+
+    function changeLanguage(lang) {
+      const select = document.querySelector(".goog-te-combo");
+      if (select) {
+        select.value = lang;
+        select.dispatchEvent(new Event("change"));
+      } else {
+        alert("Google Translate is not ready. Wait a few seconds and try again.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".translateButton").forEach(button => {
+        button.addEventListener("click", function () {
+          changeLanguage(this.getAttribute("data-lang"));
+        });
+      });
+    });
   </script>
   <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </head>
@@ -40,31 +83,29 @@
   <header>
     <button class="menu-button" onclick="toggleSidebar()">☰</button>
     {{ qtype.upper() }} - {{ source.lower() }}
-    <div id="google_translate_element" class="notranslate"></div>
   </header>
 
-<div id="sidebar">
-  <button class="close-button" onclick="toggleSidebar()">✖</button>
-  <ul>
-    <li>
-      <span>EPAC</span>
-      <ul>
-        <li><a href="/menu/epac/qcm">QCM</a></li>
-        <li><a href="/menu/epac/open">OPEN</a></li>
-      </ul>
-    </li>
-    <li>
-      <span>Pre-Exam</span>
-      <ul>
-        <li><a href="/menu/pre-exam/qcm_tf">VRAI/FAUX</a></li>
-      </ul>
-      <span></span>
-      <ul><a href="/">Chat</a></ul>
-    </li>
-  </ul>
-</div>
+  <div id="sidebar">
+    <button class="close-button" onclick="toggleSidebar()">✖</button>
+    <ul>
+      <li>
+        <span>EPAC</span>
+        <ul>
+          <li><a href="/menu/epac/qcm">QCM</a></li>
+          <li><a href="/menu/epac/open">OPEN</a></li>
+        </ul>
+      </li>
+      <li>
+        <span>Pre-Exam</span>
+        <ul>
+          <li><a href="/menu/pre-exam/qcm_tf">VRAI/FAUX</a></li>
+        </ul>
+        <ul><li><a href="/">Chat</a></li></ul>
+      </li>
+    </ul>
+  </div>
 
-    <div class="language-selector">
+  <div class="language-selector">
     <div class="language-icon notranslate" onclick="toggleLanguageMenu()">🌍</div>
     <div class="language-menu" id="languageMenu">
       <button class="translateButton notranslate" data-lang="fr">FR</button>
@@ -75,6 +116,8 @@
 
   <div class="chatbox" id="chatbox"></div>
   <div class="choices" id="interaction"></div>
+
+  <div id="google_translate_element" style="display:none;"></div>
 
   <script>
     let questions = {{ questions | tojson }};
@@ -113,64 +156,6 @@
         });
       }
 
-      else if ("{{ qtype }}" === "qcm_tf") {
-        try {
-          const res = await fetch("/api/clarify_tf", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question: questionText })
-          });
-          const data = await res.json();
-
-          const context = document.createElement("div");
-          context.className = "message bot";
-          context.style.marginBottom = "0";
-          context.innerHTML = `<p>${data.main}</p>`;
-          box.appendChild(context);
-
-          const userAnswers = {};
-          data.sub.forEach((line, idx) => {
-            const block = document.createElement("div");
-            block.className = "message bot";
-            block.innerHTML = `
-              <p><strong>Statement ${idx + 1}:</strong> ${line}</p>
-              <div style="display: flex; gap: 12px; margin-bottom: 6px;">
-                <button onclick="selectTF('${idx + 1}', 'True')">✅ True</button>
-                <button onclick="selectTF('${idx + 1}', 'False')">❌ False</button>
-                <span id="selected-${idx + 1}"></span>
-              </div>
-            `;
-            area.appendChild(block);
-          });
-
-          const submit = document.createElement("button");
-          submit.textContent = "Submit";
-          submit.onclick = () => checkTFAnswers(userAnswers);
-          area.appendChild(submit);
-
-          const feedbackDiv = document.createElement("div");
-          feedbackDiv.id = "tf-feedback";
-          feedbackDiv.className = "message bot";
-          area.appendChild(feedbackDiv);
-
-          const nextBtn = document.createElement("button");
-          nextBtn.textContent = "Next Question";
-          nextBtn.onclick = () => {
-            index++;
-            current = questions[index];
-            loadQuestion();
-          };
-          area.appendChild(nextBtn);
-
-          window.selectTF = function(index, value) {
-            userAnswers[index] = value;
-            document.getElementById("selected-" + index).innerText = "→ " + value;
-          };
-        } catch (e) {
-          box.innerHTML = "<div class='message bot'>⚠️ Error loading TF question.</div>";
-        }
-      }
-
       else if ("{{ qtype }}" === "open") {
         box.innerHTML = `<div class='message bot'>${questionText}</div>`;
         const input = document.createElement("input");
@@ -183,6 +168,59 @@
         submit.textContent = "Submit";
         submit.onclick = () => checkAnswer(input.value);
         area.appendChild(submit);
+      }
+
+      else if ("{{ qtype }}" === "qcm_tf") {
+        const res = await fetch("/api/clarify_tf", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: questionText })
+        });
+        const data = await res.json();
+
+        const context = document.createElement("div");
+        context.className = "message bot";
+        context.innerHTML = `<p>${data.main}</p>`;
+        box.appendChild(context);
+
+        const userAnswers = {};
+        data.sub.forEach((line, idx) => {
+          const block = document.createElement("div");
+          block.className = "message bot";
+          block.innerHTML = `
+            <p><strong>Statement ${idx + 1}:</strong> ${line}</p>
+            <div style="display: flex; gap: 12px; margin-bottom: 6px;">
+              <button onclick="selectTF('${idx + 1}', 'True')">✅ True</button>
+              <button onclick="selectTF('${idx + 1}', 'False')">❌ False</button>
+              <span id="selected-${idx + 1}"></span>
+            </div>
+          `;
+          area.appendChild(block);
+        });
+
+        const submit = document.createElement("button");
+        submit.textContent = "Submit";
+        submit.onclick = () => checkTFAnswers(userAnswers);
+        area.appendChild(submit);
+
+        const feedbackDiv = document.createElement("div");
+        feedbackDiv.id = "tf-feedback";
+        feedbackDiv.className = "message bot";
+        area.appendChild(feedbackDiv);
+
+        const nextBtn = document.createElement("button");
+        nextBtn.textContent = "Next Question";
+        nextBtn.onclick = () => {
+          index++;
+          current = questions[index];
+          loadQuestion();
+        };
+        area.appendChild(nextBtn);
+
+        window.selectTF = function (index, value) {
+          userAnswers[index] = value;
+          document.getElementById("selected-" + index).innerText = "→ " + value;
+        };
       }
     }
 
@@ -266,30 +304,5 @@
 
     loadQuestion();
   </script>
-  <div id="google_translate_element" style="display:none;"></div>
-
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-    }
-
-    function changeLanguage(lang) {
-      let select = document.querySelector(".goog-te-combo");
-      if (select) {
-        select.value = lang;
-        select.dispatchEvent(new Event("change"));
-      } else {
-        alert("Google Translate is not yet ready. Wait a few seconds and then try again.");
-      }
-    }
-
-    document.querySelectorAll(".translateButton").forEach(button => {
-      button.addEventListener("click", function() {
-        changeLanguage(this.getAttribute("data-lang"));
-      });
-    });
-  </script>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
 </body>
 </html>
