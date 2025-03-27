@@ -1,6 +1,6 @@
 # Data Battle IA PAU 2025 - Chatbot Juridique
 
-**Nom de l'équipe :** IA-Mates  
+**Nom de l'équipe :** IA Mates  
 **Auteurs :** Usieto Paul, Courthial Mathis, Fazille Tara, Bisbau Maxime, Cros Clément
 
 Ce projet est un chatbot juridique interactif alimenté par l'intelligence artificielle, destiné à aider les candidats à se préparer à l'examen européen de qualification (EQE) et à l'EPAC. Il propose des questions à choix multiples (QCM), des questions ouvertes, et des questions vrai/faux, basées sur des sujets d'examen passés ou simulés. Les réponses de l'utilisateur sont corrigées instantanément, soit à partir des réponses enregistrées, soit via une vérification par IA avec récupération de contexte (RAG) en cas d'absence de réponse.
