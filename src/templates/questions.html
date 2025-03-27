@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>{{ qtype.upper() }} - {{ source.lower() }}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .message.bot p:first-child {
+      margin-bottom: 8px;
+    }
+  </style>
 </head>
 <body>
   <header>
