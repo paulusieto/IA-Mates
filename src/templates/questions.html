@@ -128,8 +128,8 @@
   <div class="chatbox" id="chatbox"></div>
   <div class="choices" id="interaction"></div>
 
-  <!-- Invisible but functional Google Translate target -->
-  <div id="google_translate_element" class="notranslate" style="position:absolute; top:-1000px;"></div>
+  <div id="google_translate_element" class="notranslate" style="position: fixed; top: 50px; right: 10px; z-index: 1000;"></div>
+
 
   <script>
     let questions = {{ questions | tojson }};
